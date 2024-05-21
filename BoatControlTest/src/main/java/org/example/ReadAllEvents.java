@@ -56,10 +56,7 @@ public class ReadAllEvents {
                     buffer.append(comp.getName()).append(" changed to ");
                     float value = event.getValue();
 
-                    /*
-                     * Check the type of the component and display an
-                     * appropriate value
-                     */
+                    // Check the type of the component and display an appropriate value
                     if (comp.isAnalog()) {
                         buffer.append(value);
                     } else {
@@ -73,9 +70,7 @@ public class ReadAllEvents {
                 }
             }
 
-            /*
-             * Sleep for 20 ms, in here only so the example doesn't thrash the system.
-             */
+            // Sleep for 20 ms, in here only so the example doesn't thrash the system.
             try {
                 Thread.sleep(20);
             } catch (InterruptedException e) {

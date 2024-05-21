@@ -5,16 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a4ba2c7a-c7d9-48e1-9f8d-2f367542d817" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/BoatControlTest/coreAPI/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BoatControlTest/examples/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BoatControlTest/plugins/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BoatControlTest/src/main/java/org/example/PS5ControlTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BoatControlTest/src/main/java/org/example/ReadAllEvents.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BoatControlTest/tests/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BoatControlTest/uberjar/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BoatControlTest/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/BoatControlTest/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PS5ControlTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BoatControlTest/src/main/java/org/example/ReadAllEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/BoatControlTest/src/main/java/org/example/ReadAllEvents.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +34,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.ReadAllEvents.executor": "Run",
     "Downloaded.Files.Path.Enabled": "true",
     "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
     "Repository.Attach.Annotations": "false",
@@ -96,6 +89,24 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ReadAllEvents" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.example.ReadAllEvents" />
+      <module name="BoatControlTest" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.ReadAllEvents" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -118,7 +129,7 @@
       <workItem from="1715845138605" duration="1293000" />
       <workItem from="1716246675734" duration="478000" />
       <workItem from="1716291890335" duration="148000" />
-      <workItem from="1716292193936" duration="5553000" />
+      <workItem from="1716292193936" duration="5782000" />
     </task>
     <servers />
   </component>
