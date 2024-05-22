@@ -6,8 +6,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="BoatControlTest" />
+        <module name="uberjar" />
+        <module name="coreAPI" />
+        <module name="tests" />
+        <module name="examples" />
+        <module name="plugins" />
       </profile>
     </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="coreAPI" options="-Werror -Xlint:all,-options -h C:\Users\szabo\OneDrive\Dokumentumok\University\SolarBoat\BoatControlTest\coreAPI\target/generated-sources/natives" />
+      <module name="plugins" options="-Werror -Xlint:all,-options -h C:\Users\szabo\OneDrive\Dokumentumok\University\SolarBoat\BoatControlTest\plugins\target/generated-sources/natives" />
+    </option>
   </component>
 </project>

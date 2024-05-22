@@ -18,24 +18,18 @@ public class ReadAllEvents {
     public ReadAllEvents() {
         while (true) {
             /* Get the available controllers */
-            Controller[] controllers = ControllerEnvironment
-                    .getDefaultEnvironment().getControllers();
+            Controller[] controllers = new Controller[];
+            controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
             if (controllers.length == 0) {
                 System.out.println("Found no controllers.");
                 System.exit(0);
             }
 
-            for (int i = 0; i < controllers.length; i++) {
-                /* Remember to poll each one */
-                controllers[i].poll();
-
-                /* Get the controllers event queue */
-                EventQueue queue = controllers[i].getEventQueue();
-
-                /* Create an event object for the underlying plugin to populate */
+            for (Controller controller : controllers) {
+                controller.poll();
+                EventQueue queue = controller.getEventQueue();
                 Event event = new Event();
 
-                /* For each object in the queue */
                 while (queue.getNextEvent(event)) {
 
                     /*
@@ -48,8 +42,8 @@ public class ReadAllEvents {
                      * across controllers this way. We can not use it to tell
                      * exactly *when* an event happened just the order.
                      */
-                    StringBuffer buffer = new StringBuffer(controllers[i]
-                            .getName());
+
+                    StringBuffer buffer = new StringBuffer(controller.getName());
                     buffer.append(" at ");
                     buffer.append(event.getNanos()).append(", ");
                     Component comp = event.getComponent();
@@ -72,9 +66,8 @@ public class ReadAllEvents {
 
             // Sleep for 20 ms, in here only so the example doesn't thrash the system.
             try {
-                Thread.sleep(20);
+                Threads.sleep(20);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
