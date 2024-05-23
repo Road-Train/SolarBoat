@@ -17,6 +17,16 @@
             <artifactId>controller-api</artifactId>
             <version>0.17.0</version>
         </dependency>
+        <dependency>
+            <groupId>net.java.jinput</groupId>
+            <artifactId>linux-plugin</artifactId>
+            <version>2.0.11-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.jinput</groupId>
+            <artifactId>jinput</artifactId>
+            <version>2.0.9</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -24,8 +34,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>9</source>
-                    <target>9</target>
+                    <source>22</source>
+                    <target>22</target>
+                    <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
             </plugin>
         </plugins>

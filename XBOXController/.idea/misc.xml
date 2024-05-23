@@ -16,7 +16,6 @@
         <option value="$PROJECT_DIR$/../../jinput/plugins/pom.xml" />
         <option value="$PROJECT_DIR$/../../jinput/plugins/windows/pom.xml" />
         <option value="$PROJECT_DIR$/../../jinput/plugins/wintab/pom.xml" />
-        <option value="$PROJECT_DIR$/../../jinput/pom.xml" />
         <option value="$PROJECT_DIR$/../../jinput/tests/pom.xml" />
         <option value="$PROJECT_DIR$/../../jinput/uberjar/pom.xml" />
       </set>

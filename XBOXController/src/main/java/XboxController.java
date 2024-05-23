@@ -47,4 +47,24 @@ public class XboxController implements Controller {
         }
         return null; // Component not found
     }
+
+    @Override
+    public boolean poll() {
+        return false;
+    }
+
+    @Override
+    public void setEventQueueSize(int size) {
+
+    }
+
+    @Override
+    public EventQueue getEventQueue() {
+        return null;
+    }
+
+    @Override
+    public String getName() {
+        return "";
+    }
 }

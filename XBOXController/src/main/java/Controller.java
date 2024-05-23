@@ -11,5 +11,9 @@ public interface Controller {
     Component[] getComponents();
     // Returns a single axis based on its type
     Component getComponent(Component.Identifier id);
+    boolean poll();
+    void setEventQueueSize(int size);
+    EventQueue getEventQueue();
+    String getName();
 
 }
