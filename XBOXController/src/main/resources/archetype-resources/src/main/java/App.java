@@ -19,7 +19,7 @@ public class App
         controllerEnvironment = ControllerEnvironment.getDefaultEnvironment();
 
         // Get the controller (only one we need)
-        Controller controller = controllerEnvironment.getControllers();
+        Controller[] controllers = controllerEnvironment.getControllers();
 
         // Iterate over each controller that is connected
         // and print something out
