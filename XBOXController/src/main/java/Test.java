@@ -13,11 +13,11 @@ public class Test
         controllerEnvironment = ControllerEnvironment.getDefaultEnvironment();
 
         // Get an array of all the controllers
-        Controller controller = controllerEnvironment.getControllers();
+        Controller[] controllers = controllerEnvironment.getControllers();
 
         // Iterate over each controller that is connected
         // and print something out
-        if(controller != null) {
+        for(Controller controller : controllers) {
             System.out.println("Controller: " + controller);
 
             //TODO: Add logic to handle controller input events HERE
