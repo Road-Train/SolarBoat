@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -25,6 +24,6 @@ public abstract class ControllerEnvironment {
     public static ControllerEnvironment getDefaultEnvironment() {
         return defaultEnvironment;
     }
-    public abstract Controller[] getControllers();
+    public abstract Controller getControllers();
 
 }
