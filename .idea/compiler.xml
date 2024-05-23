@@ -16,8 +16,8 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="coreAPI" options="-Werror -Xlint:all,-options -h C:\Users\szabo\OneDrive\Dokumentumok\University\SolarBoat\BoatControlTest\coreAPI\target/generated-sources/natives" />
-      <module name="plugins" options="-Werror -Xlint:all,-options -h C:\Users\szabo\OneDrive\Dokumentumok\University\SolarBoat\BoatControlTest\plugins\target/generated-sources/natives" />
+      <module name="coreAPI" options="-Werror -Xlint:all,-options -h $PROJECT_DIR$/BoatControlTest/coreAPI/target/generated-sources/natives" />
+      <module name="plugins" options="-Werror -Xlint:all,-options -h $PROJECT_DIR$/BoatControlTest/plugins/target/generated-sources/natives" />
     </option>
   </component>
 </project>

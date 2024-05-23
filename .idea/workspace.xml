@@ -5,11 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a4ba2c7a-c7d9-48e1-9f8d-2f367542d817" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/XBOXController/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/XBOXController/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/XBOXController/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/XBOXController/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ControlTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/XBOXController/src/main/java/DefaultControllerEnvironment.java" beforeDir="false" afterPath="$PROJECT_DIR$/XBOXController/src/main/java/DefaultControllerEnvironment.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,18 +25,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "ViragSzabo"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;ViragSzabo&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Road-Train/SolarBoat.git",
-    "accountId": "df2c228f-9552-44d6-a1bb-ec1f98b881db"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Road-Train/SolarBoat.git&quot;,
+    &quot;accountId&quot;: &quot;df2c228f-9552-44d6-a1bb-ec1f98b881db&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -55,11 +54,13 @@
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
     "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "Jinput-API-Game-Controller",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/szabo/OneDrive/Dokumentumok/University/SolarBoat/XBOXController",
+    "last_opened_file_path": "/Users/polinaive/Documents/GitHub/SolarBoat",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -146,6 +147,7 @@
       <workItem from="1716291890335" duration="148000" />
       <workItem from="1716292193936" duration="16748000" />
       <workItem from="1716386843864" duration="683000" />
+      <workItem from="1716465613161" duration="458000" />
     </task>
     <servers />
   </component>
