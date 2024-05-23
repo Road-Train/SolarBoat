@@ -9,15 +9,15 @@ public class Test
         // ControllerEnvironment represents a collection of controlelrs
         // that are physically / logically linked
         // by default, this correspons to the environment for the local machine
-        ControllerEnvironment controllerEnvironment = new ControllerEnvironment();
+        ControllerEnvironment controllerEnvironment;
         controllerEnvironment = ControllerEnvironment.getDefaultEnvironment();
 
         // Get an array of all the controllers
-        ModuleLayer.Controller[] controllers = controllerEnvironment.getControllers();
+        Controller[] controllers = controllerEnvironment.getControllers();
 
         // Iterate over each controller that is connected
         // and print something out
-        for ( ModuleLayer.Controller controller : controllers ) {
+        for (Controller controller : controllers) {
             System.out.println("Controller: " + controller);
 
             //TODO: Add logic to handle controller input events HERE
