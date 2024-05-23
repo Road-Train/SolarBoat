@@ -4,12 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a4ba2c7a-c7d9-48e1-9f8d-2f367542d817" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/XBOXController/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/XBOXController/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/XBOXController/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/XBOXController/.idea/vcs.xml" beforeDir="false" />
+    <list default="true" id="24f27878-63af-4b28-9ac2-2ed919db5501" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/archetype-resources/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/archetype-resources/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,7 +28,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitHubPullRequestSearchHistory"><![CDATA[{
   "lastFilter": {
@@ -38,37 +42,27 @@
     "accountId": "df2c228f-9552-44d6-a1bb-ec1f98b881db"
   }
 }]]></component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 8
-}</component>
-  <component name="ProjectId" id="2gTN4oZ6xWQw2wvx20aLfAXBldy" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="2gpIXch4FwKcHuQAHMnOCJ8pD7q" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.ReadAllEvents.executor": "Run",
-    "Downloaded.Files.Path.Enabled": "true",
-    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
+    "Application.App.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "Jinput-API-Game-Controller",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/szabo/OneDrive/Dokumentumok/University/SolarBoat/XBOXController",
+    "last_opened_file_path": "C:/Users/szabo/OneDrive/Dokumentumok/University/jinput",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/szabo/OneDrive/Dokumentumok/University/ControlTest/src/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2911932",
     "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
     "vue.rearranger.settings.migration": "true"
   }
@@ -78,7 +72,7 @@
       <option name="appName" />
       <option name="appServicePlanName" />
       <option name="appServicePlanResourceGroup" />
-      <option name="appSettingsKey" value="97e0aaf5-80cd-4d58-88db-7c25b98a8703" />
+      <option name="appSettingsKey" value="64f1f2c2-26f2-4aa9-84c6-252c4b8453cb" />
       <option name="artifact" />
       <option name="debugOptions" />
       <option name="deployment" />
@@ -104,24 +98,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ReadAllEvents" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.example.ReadAllEvents" />
-      <module name="BoatControlTest" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.ReadAllEvents" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -134,18 +110,12 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="a4ba2c7a-c7d9-48e1-9f8d-2f367542d817" name="Changes" comment="" />
-      <created>1715717421900</created>
+      <changelist id="24f27878-63af-4b28-9ac2-2ed919db5501" name="Changes" comment="" />
+      <created>1716388133314</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1715717421900</updated>
-      <workItem from="1715717423241" duration="1695000" />
-      <workItem from="1715765425696" duration="330000" />
-      <workItem from="1715845138605" duration="1293000" />
-      <workItem from="1716246675734" duration="478000" />
-      <workItem from="1716291890335" duration="148000" />
-      <workItem from="1716292193936" duration="16748000" />
-      <workItem from="1716386843864" duration="683000" />
+      <updated>1716388133314</updated>
+      <workItem from="1716388134356" duration="1061000" />
     </task>
     <servers />
   </component>
