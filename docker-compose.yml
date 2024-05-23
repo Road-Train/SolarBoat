@@ -1,12 +1,10 @@
-version: '3.8'
-
 services:
   xbox-controller:
     build: .
     volumes:
       - .:/usr/src/app
-    devices:
-      - "/dev/input/js0:/dev/input/js0"  # Adjust based on your joystick device path
     environment:
       - DISPLAY
     network_mode: host
+    devices:
+      - "/dev/input/js0:/dev/input/js0"  # Adjust based on your controller's device path
