@@ -21,10 +21,8 @@ public abstract class ControllerEnvironment {
             Logger.getLogger(loggerName).setLevel(level);
         }
     }
-
     public static ControllerEnvironment getDefaultEnvironment() {
         return defaultEnvironment;
     }
     public abstract Controller[] getControllers();
-
 }

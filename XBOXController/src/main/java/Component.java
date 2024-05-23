@@ -1,5 +1,3 @@
-import org.checkerframework.checker.signature.qual.Identifier;
-
 /**
  * An axis is a single button, slider or dial which has a single range.
  * Hold information for motion.

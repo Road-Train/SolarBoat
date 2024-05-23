@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a4ba2c7a-c7d9-48e1-9f8d-2f367542d817" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/XBOXController/src/main/java/Example.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/XBOXController/src/main/java/XboxAxis.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/XBOXController/src/main/java/XboxButton.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/XBOXController/src/main/java/XboxController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ControlTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ControlTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/XBOXController/src/main/java/Component.java" beforeDir="false" afterPath="$PROJECT_DIR$/XBOXController/src/main/java/Component.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/XBOXController/src/main/java/ControllerEnvironment.java" beforeDir="false" afterPath="$PROJECT_DIR$/XBOXController/src/main/java/ControllerEnvironment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/XBOXController/src/main/java/DefaultControllerEnvironment.java" beforeDir="false" afterPath="$PROJECT_DIR$/XBOXController/src/main/java/DefaultControllerEnvironment.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,6 +42,9 @@
     &quot;accountId&quot;: &quot;df2c228f-9552-44d6-a1bb-ec1f98b881db&quot;
   }
 }</component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -74,7 +82,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Example">
     <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
       <option name="appName" />
       <option name="appServicePlanName" />
@@ -105,6 +113,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Example" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Example" />
+      <module name="ControlTest" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ReadAllEvents" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.ReadAllEvents" />
       <module name="BoatControlTest" />
@@ -120,6 +135,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Example" />
         <item itemvalue="Application.ReadAllEvents" />
       </list>
     </recent_temporary>
@@ -147,7 +163,7 @@
       <workItem from="1716291890335" duration="148000" />
       <workItem from="1716292193936" duration="16748000" />
       <workItem from="1716386843864" duration="683000" />
-      <workItem from="1716465613161" duration="458000" />
+      <workItem from="1716465613161" duration="8437000" />
     </task>
     <servers />
   </component>
