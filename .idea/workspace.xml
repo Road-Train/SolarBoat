@@ -5,15 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a4ba2c7a-c7d9-48e1-9f8d-2f367542d817" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/XBOXController/src/main/java/Example.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/XBOXController/src/main/java/XboxAxis.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/XBOXController/src/main/java/XboxButton.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/XBOXController/src/main/java/XboxController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ControlTest.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/XBOXController/src/main/java/Component.java" beforeDir="false" afterPath="$PROJECT_DIR$/XBOXController/src/main/java/Component.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/XBOXController/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/XBOXController/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/XBOXController/src/main/java/ControllerEnvironment.java" beforeDir="false" afterPath="$PROJECT_DIR$/XBOXController/src/main/java/ControllerEnvironment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/XBOXController/src/main/java/DefaultControllerEnvironment.java" beforeDir="false" afterPath="$PROJECT_DIR$/XBOXController/src/main/java/DefaultControllerEnvironment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/XBOXController/src/main/resources/archetype-resources/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/XBOXController/src/main/resources/archetype-resources/src/main/java/App.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,7 +159,7 @@
       <workItem from="1716291890335" duration="148000" />
       <workItem from="1716292193936" duration="16748000" />
       <workItem from="1716386843864" duration="683000" />
-      <workItem from="1716465613161" duration="8437000" />
+      <workItem from="1716465613161" duration="8755000" />
     </task>
     <servers />
   </component>
