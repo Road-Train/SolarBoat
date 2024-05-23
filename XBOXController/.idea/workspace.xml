@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="24f27878-63af-4b28-9ac2-2ed919db5501" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Event.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/EventQueue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/TestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Test.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/XboxController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/XboxController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,7 +147,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1716388133314</updated>
-      <workItem from="1716388134356" duration="21773000" />
+      <workItem from="1716388134356" duration="22188000" />
     </task>
     <servers />
   </component>

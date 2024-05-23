@@ -66,7 +66,8 @@ public static class TestController implements Runnable {
         // and print something out
         for (Controller controller : controllers) {
             System.out.println("Controller: " + controller);
-            new TestController(controller).run();
-
+            System.out.println(controller.poll()); // poll controller
+            System.out.println(controller.getName());
+            new Thread(new TestController(controller)).start();
         }
     }
