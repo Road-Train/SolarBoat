@@ -7,7 +7,23 @@ last_values = {
     'left_x': 0.0,
     'left_y': 0.0,
     'right_x': 0.0,
-    'right_y': 0.0
+    'right_y': 0.0,
+    'left_trigger':0.0,
+    'right_trigger':0.0
+}
+button_names = {
+    0:'A',
+    1:'B',
+    2:'X',
+    3:'Y',
+    4:'Left Bumper',
+    5:'Right Bumper',
+    6:'Double Screen',
+    7:'Menu',
+    8:'Left Joystick',
+    9:'Right Joystick',
+    10:'XBOX',
+    11:'Upload'
 }
 
 def initialize_joystick():
@@ -22,13 +38,11 @@ def initialize_joystick():
 def process_joystick_events(joystick):
     for event in pygame.event.get():
         if event.type == pygame.JOYBUTTONDOWN:
-            print(f"Button {event.button} pressed")
-        elif event.type == pygame.JOYBUTTONUP:
-            print(f"Button {event.button} released")
+            print(f"{button_names[event.button]} pressed")
+
         elif event.type == pygame.JOYAXISMOTION:
             axis_value = event.value
             axis_index = event.axis
-            
             if axis_index == 0:
                 axis_name = 'left_x'
             elif axis_index == 1:
@@ -37,6 +51,10 @@ def process_joystick_events(joystick):
                 axis_name = 'right_x'
             elif axis_index == 3:
                 axis_name = 'right_y'
+            elif axis_index == 4:
+                axis_name = 'left_trigger'
+            elif axis_index == 5:
+                axis_name = 'right_trigger'
             else:
                 continue
             
