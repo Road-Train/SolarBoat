@@ -9,13 +9,6 @@ COPY . .
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
-# Check the OS type and adjust configurations accordingly
-# ARG OS_TYPE
-# RUN if [ "$OS_TYPE" = "linux" ]; then \
-#         # Linux-specific configurations \
-#     else \
-#         # Windows-specific configurations \
-#     fi
 
 # Run the script when the container launches
 CMD ["python", "./ReadControllerInputs.py"]

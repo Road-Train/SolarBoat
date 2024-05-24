@@ -8,4 +8,5 @@ services:
       - DISPLAY
     network_mode: host
     devices:
-      - "/dev/bus/usb/001/001:/dev/bus/usb/001/001"  # Adjust based on your controller's device path
+      - "/dev/bus/usb/001/002:/dev/bus/usb/001/002"
+    privileged: true  # Grant extended privileges to this container
