@@ -4,9 +4,11 @@ services:
     build: .
     volumes:
       - .:/usr/src/app
+      - /dev/input:/dev/input
+      - /dev/bus/usb:/dev/bus/usb
     environment:
       - DISPLAY
     network_mode: host
     devices:
-      - "/dev/bus/usb/001/002:/dev/bus/usb/001/002"
+      - "/dev/bus/usb/001/007:/dev/bus/usb/001/007"
     privileged: true  # Grant extended privileges to this container
