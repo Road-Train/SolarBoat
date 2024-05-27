@@ -1,1 +1,2 @@
-pygame;
+PyQt5~=5.15.10
+pygame~=2.5.2
