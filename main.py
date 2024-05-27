@@ -4,7 +4,8 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHB
 from header import Header
 from footer import Footer
 from menu import Menu
-from content import Content
+from body import Body  # Assuming Body is the class representing the initial content
+from boatInfo import BoatInfo
 
 
 class Application(QMainWindow):
@@ -50,10 +51,10 @@ class Application(QMainWindow):
         menu.setFont(custom_font)  # Set font for menu
         menu_and_app_layout.addWidget(menu)
 
-        # Create the content area
-        content = Content()
-        content.setFont(custom_font)  # Set font for content
-        menu_and_app_layout.addWidget(content)
+        # Create the initial content area (Body)
+        initial_content = Body()  # Assuming Body represents the initial content
+        initial_content.setFont(custom_font)  # Set font for content
+        menu_and_app_layout.addWidget(initial_content)
 
         # Add the horizontal layout to the main layout
         main_layout.addLayout(menu_and_app_layout)
@@ -76,3 +77,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
