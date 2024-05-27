@@ -22,11 +22,14 @@ class Application(QMainWindow):
         font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
         # Create the font object
         custom_font = QFont(font_family)
+        custom_font.setPixelSize(16)
+        custom_font.setBold(True)
+
 
         # Set the default font for the application
         QApplication.instance().setFont(custom_font)
 
-        self.setStyleSheet("background-image: url(src/img/BackgroundUI.png);")
+        # self.setStyleSheet("background-image: url(src/img/BackgroundUI.png);")
 
         # Create the main widget and layout
         main_widget = QWidget()

@@ -16,7 +16,7 @@ class Menu(QWidget):
         self.setFixedWidth(512)
 
         # Apply border style
-        self.setStyleSheet("border: 1px solid #F7A072;")
+        self.setStyleSheet("border: 2px solid #F7A072;")
 
         # Menu Header
         menu_header = QLabel('Menu')
