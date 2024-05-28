@@ -8,5 +8,8 @@ Programming language: [Python3](https://www.python.org/downloads/)
 Run setup.bat
 
 ## Run
-Front-end: "in progress"
-Back-end: run InputReader.py
+### Front-end
+"in progress"
+
+### Back-end
+Run InputReader.py
