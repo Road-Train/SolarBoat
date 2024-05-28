@@ -31,10 +31,10 @@ class InputReader:
 
     # Button names for PS5 controller
     PS5_button_names = {
-        0: 'Triangle',
+        0: 'Cross',
         1: 'Circle',
         2: 'Square',
-        3: 'Cross',
+        3: 'Triangle',
         4: 'Left Thumbstick button',
         5: 'PS5',
         6: 'Right Thumbstick button',
