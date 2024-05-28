@@ -1,7 +1,6 @@
 import pygame
 import time
 
-
 class InputReader:
     # Initialize threshold and last sent values
     DEAD_ZONE = 0.01
@@ -41,7 +40,7 @@ class InputReader:
         6: 'Right Thumbstick button',
         7: 'XBOX Menu',
         8: 'Left Stick',
-        9: 'Right Stick',
+        9: 'L1',
         10: 'R1',
         11: 'Up',
         12: 'Down',
@@ -73,7 +72,8 @@ class InputReader:
                 axis_name = self.get_axis_name(event.axis)
                 if axis_name and abs(axis_value - self.last_values[axis_name]) > self.DEAD_ZONE:
                     self.last_values[axis_name] = axis_value
-                    print(f"Axis {axis_name} value: {axis_value:.2f}")
+                    axis_human = self.get_human_axis(axis_name)
+                    print(f"Axis {axis_human} value: {axis_value:.2f}")
             elif event.type == pygame.JOYHATMOTION:
                 # Handle D-Pad movement
                 print(f"D-Pad: {event.value}")
@@ -89,7 +89,18 @@ class InputReader:
             4: 'left_trigger',
             5: 'right_trigger'
         }.get(axis_index, None)
-
+        
+    @staticmethod
+    def get_human_axis(axis_index):
+        """Map axis index to axis name."""
+        return {
+            'left_x':'Left Joystick Horizontal',
+            'left_y': 'Left Joystick Vertical',
+            'right_x': 'Right Joystick Horizontal',
+            'right_y': 'Right Joystick Vertical',
+            'left_trigger': 'Left Sharp Turn',
+            'right_trigger': 'Right Sharp Turn'
+        }.get(axis_index, None)
 
 def main():
     pygame.init()
