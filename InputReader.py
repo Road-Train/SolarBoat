@@ -13,20 +13,40 @@ class InputReader:
         'left_trigger':0.0,
         'right_trigger':0.0
     }
+    
     button_names = {
-        0:'A',
-        1:'B',
-        2:'X',
-        3:'Y',
+        0:'A / Triangle',
+        1:'B / Circle',
+        2:'X / Square',
+        3:'Y / Cross',
         4:'Left Bumper',
         5:'Right Bumper',
-        6:'Double Screen',
-        7:'Menu',
+        6:'XBOX Double Screen',
+        7:'XBOX Menu',
         8:'Left Joystick',
         9:'Right Joystick',
         10:'XBOX',
-        11:'Upload'
     }
+    
+    PS5_button_names = {
+        0:'Triangle',
+        1:'Circle',
+        2:'Square',
+        3:'Cross',
+        4:'Left Bumper',
+        5:'Right Bumper / PS5',
+        6:'XBOX Double Screen / PS5 Right Bumper',
+        7:'XBOX Menu',
+        8:'Left Joystick',
+        9:'Right Joystick / PS5 L1',
+        10:'XBOX / PS5 R1',
+        11:'Up',
+        12:'Down',
+        13:'Left',
+        14:'Right',
+        15:'PS5 Pad'
+    }
+    
     def initialize_joystick():
         pygame.joystick.init()  # Reinitialize the joystick subsystem
         joystick_count = pygame.joystick.get_count()
