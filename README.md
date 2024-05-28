@@ -1,11 +1,11 @@
 # SolarBoat
-Knowledge Management Repository
+A Knowledge Management Project by NHL Stenden students.
 
 ## Requirements
-Programming language: Python 3
+Programming language: (Python3)[https://www.python.org/downloads/]
 
 ## Install
-Run setup.bat file
+Run setup.bat
 
 ## Run
 Front-end: "in progress"
