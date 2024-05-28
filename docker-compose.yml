@@ -10,3 +10,14 @@ services:
     devices:
       - "/dev/bus/usb/001/002:/dev/bus/usb/001/002"
     privileged: true  # Grant extended privileges to this container
+
+#  ps5-controller:
+#    build: .
+#    volumes:
+#      - .:/usr/src/app
+#    environment:
+#      - DISPLAY
+#    network_mode: host
+#    devices:
+#      - "/dev/bus/usb/001/002:/dev/bus/usb/001/002"
+#    privileged: true  # Grant extended privileges to this container
