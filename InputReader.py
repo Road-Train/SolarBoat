@@ -65,7 +65,7 @@ class InputReader:
         for event in pygame.event.get():
             if event.type == pygame.JOYBUTTONDOWN:
                 # Handle button press
-                print(f"{self.PS5_button_names.get(event.button, 'Unknown')} pressed")
+                print(f"{self.PS5_button_names.get(event.button, 'Unknown')} got pressed")
             elif event.type == pygame.JOYAXISMOTION:
                 # Handle axis movement
                 axis_value = event.value
@@ -73,7 +73,7 @@ class InputReader:
                 if axis_name and abs(axis_value - self.last_values[axis_name]) > self.DEAD_ZONE:
                     self.last_values[axis_name] = axis_value
                     axis_human = self.get_human_axis(axis_name)
-                    print(f"Axis {axis_human} value: {axis_value:.2f}")
+                    print(f"Axis: {axis_human} by the value: {axis_value:.2f}")
             elif event.type == pygame.JOYHATMOTION:
                 # Handle D-Pad movement
                 print(f"D-Pad: {event.value}")
