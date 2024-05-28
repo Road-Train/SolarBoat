@@ -38,7 +38,7 @@ class InputReader:
         4: 'Left Thumbstick button',
         5: 'PS5',
         6: 'Right Thumbstick button',
-        7: 'XBOX Menu',
+        7: 'Menu',
         8: 'Left Stick',
         9: 'L1',
         10: 'R1',
@@ -74,6 +74,11 @@ class InputReader:
                     self.last_values[axis_name] = axis_value
                     axis_human = self.get_human_axis(axis_name)
                     print(f"Axis: {axis_human} by the value: {axis_value:.2f}")
+                    
+                    # Check if the axis is one of the triggers and print the pressure level
+                    if axis_name in ['left_trigger', 'right_trigger','letft_x','left_y','right_x','right_y']:
+                        pressure = (axis_value + 1) / 2 * 100  # Scale from 0 to 100
+                        print(f"{axis_human} pressure level: {pressure:.2f}%")
             elif event.type == pygame.JOYHATMOTION:
                 # Handle D-Pad movement
                 print(f"D-Pad: {event.value}")
