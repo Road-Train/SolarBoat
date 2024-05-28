@@ -14,11 +14,11 @@ class InputReader:
         'right_trigger':0.0
     }
     
-    button_names = {
-        0:'A / Triangle',
-        1:'B / Circle',
-        2:'X / Square',
-        3:'Y / Cross',
+    XBOX_button_names = {
+        0:'A',
+        1:'B',
+        2:'X',
+        3:'Y',
         4:'Left Bumper',
         5:'Right Bumper',
         6:'XBOX Double Screen',
@@ -26,6 +26,7 @@ class InputReader:
         8:'Left Joystick',
         9:'Right Joystick',
         10:'XBOX',
+        11:'Update'
     }
     
     PS5_button_names = {
@@ -33,18 +34,18 @@ class InputReader:
         1:'Circle',
         2:'Square',
         3:'Cross',
-        4:'Left Bumper',
-        5:'Right Bumper / PS5',
-        6:'XBOX Double Screen / PS5 Right Bumper',
+        4:'Left Thumbstick button',
+        5:'PS5',
+        6:'Right Thumbstick button',
         7:'XBOX Menu',
-        8:'Left Joystick',
-        9:'Right Joystick / PS5 L1',
-        10:'XBOX / PS5 R1',
+        8:'Left Stick',
+        9:'Right Stick',
+        10:'R1',
         11:'Up',
         12:'Down',
         13:'Left',
         14:'Right',
-        15:'PS5 Pad'
+        15:'Pad'
     }
     
     def initialize_joystick():
@@ -59,8 +60,8 @@ class InputReader:
     def process_joystick_events(self):
         for event in pygame.event.get():
             if event.type == pygame.JOYBUTTONDOWN:
-                print(f"{self.button_names[event.button]} pressed")
-
+                print(f"{self.PS5_button_names[event.button]} pressed") # controller
+ 
             elif event.type == pygame.JOYAXISMOTION:
                 axis_value = event.value
                 axis_index = event.axis
