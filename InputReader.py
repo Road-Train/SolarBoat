@@ -45,7 +45,7 @@ class InputReader:
         12:'Down',
         13:'Left',
         14:'Right',
-        15:'Pad'
+        15:'D-Pad'
     }
     
     def initialize_joystick():
