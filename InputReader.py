@@ -10,45 +10,49 @@ class InputReader:
         'left_y': 0.0,
         'right_x': 0.0,
         'right_y': 0.0,
-        'left_trigger':0.0,
-        'right_trigger':0.0
+        'left_trigger': 0.0,
+        'right_trigger': 0.0
     }
-    
+
+    # Button names for Xbox controller
     XBOX_button_names = {
-        0:'A',
-        1:'B',
-        2:'X',
-        3:'Y',
-        4:'Left Bumper',
-        5:'Right Bumper',
-        6:'XBOX Double Screen',
-        7:'XBOX Menu',
-        8:'Left Joystick',
-        9:'Right Joystick',
-        10:'XBOX',
-        11:'Update'
+        0: 'A',
+        1: 'B',
+        2: 'X',
+        3: 'Y',
+        4: 'Left Bumper',
+        5: 'Right Bumper',
+        6: 'XBOX Double Screen',
+        7: 'XBOX Menu',
+        8: 'Left Joystick',
+        9: 'Right Joystick',
+        10: 'XBOX',
+        11: 'Update'
     }
-    
+
+    # Button names for PS5 controller
     PS5_button_names = {
-        0:'Triangle',
-        1:'Circle',
-        2:'Square',
-        3:'Cross',
-        4:'Left Thumbstick button',
-        5:'PS5',
-        6:'Right Thumbstick button',
-        7:'XBOX Menu',
-        8:'Left Stick',
-        9:'Right Stick',
-        10:'R1',
-        11:'Up',
-        12:'Down',
-        13:'Left',
-        14:'Right',
-        15:'D-Pad'
+        0: 'Triangle',
+        1: 'Circle',
+        2: 'Square',
+        3: 'Cross',
+        4: 'Left Thumbstick button',
+        5: 'PS5',
+        6: 'Right Thumbstick button',
+        7: 'XBOX Menu',
+        8: 'Left Stick',
+        9: 'Right Stick',
+        10: 'R1',
+        11: 'Up',
+        12: 'Down',
+        13: 'Left',
+        14: 'Right',
+        15: 'D-Pad'
     }
-    
+
+    @staticmethod
     def initialize_joystick():
+        """Initialize the joystick subsystem and return the first joystick if available."""
         pygame.joystick.init()  # Reinitialize the joystick subsystem
         joystick_count = pygame.joystick.get_count()
         if joystick_count == 0:
@@ -58,49 +62,52 @@ class InputReader:
         return joystick
 
     def process_joystick_events(self):
+        """Process joystick events and print button presses and axis movements."""
         for event in pygame.event.get():
             if event.type == pygame.JOYBUTTONDOWN:
-                print(f"{self.PS5_button_names[event.button]} pressed") # controller
- 
+                # Handle button press
+                print(f"{self.PS5_button_names.get(event.button, 'Unknown')} pressed")
             elif event.type == pygame.JOYAXISMOTION:
+                # Handle axis movement
                 axis_value = event.value
-                axis_index = event.axis
-                if axis_index == 0:
-                    axis_name = 'left_x'
-                elif axis_index == 1:
-                    axis_name = 'left_y'
-                elif axis_index == 2:
-                    axis_name = 'right_x'
-                elif axis_index == 3:
-                    axis_name = 'right_y'
-                elif axis_index == 4:
-                    axis_name = 'left_trigger'
-                elif axis_index == 5:
-                    axis_name = 'right_trigger'
-                else:
-                    continue
-                
-                if abs(axis_value - self.last_values[axis_name]) > self.DEAD_ZONE:
+                axis_name = self.get_axis_name(event.axis)
+                if axis_name and abs(axis_value - self.last_values[axis_name]) > self.DEAD_ZONE:
                     self.last_values[axis_name] = axis_value
                     print(f"Axis {axis_name} value: {axis_value:.2f}")
             elif event.type == pygame.JOYHATMOTION:
+                # Handle D-Pad movement
                 print(f"D-Pad: {event.value}")
+
+    @staticmethod
+    def get_axis_name(axis_index):
+        """Map axis index to axis name."""
+        return {
+            0: 'left_x',
+            1: 'left_y',
+            2: 'right_x',
+            3: 'right_y',
+            4: 'left_trigger',
+            5: 'right_trigger'
+        }.get(axis_index, None)
+
 
 def main():
     pygame.init()
+    input_reader = InputReader()
     while True:
         joystick = InputReader.initialize_joystick()
         if joystick:
             print(f"Joystick name: {joystick.get_name()}")
             while pygame.joystick.get_count() > 0:
-                InputReader.process_joystick_events(InputReader)
+                input_reader.process_joystick_events()
                 time.sleep(0.01)  # Adjust sleep time as needed to balance responsiveness and CPU usage
                 pygame.joystick.init()  # Reinitialize to check for disconnects
         else:
             print("No joystick connected.")
             pygame.quit()
             pygame.init()
-        time.sleep(3)  # Check for joystick reconnection every second if none are connected
+        time.sleep(3)  # Check for joystick reconnection every 3 seconds if none are connected
+
 
 if __name__ == "__main__":
     main()
