@@ -1,2 +1,2 @@
-PyQt5~=5.15.10
+django.core.management
 pygame~=2.5.2
