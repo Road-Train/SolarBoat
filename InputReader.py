@@ -29,6 +29,26 @@ class InputReader:
         11: 'Update'
     }
 
+    # Button names for PS3 controller
+    PS3_button_names = {
+        0: 'Cross',
+        1: 'Circle',
+        2: 'Square',
+        3: 'Triangle',
+        4: 'L1',
+        5: 'R1',
+        6: 'Select',
+        7: 'Start',
+        8: '-',
+        9: '-',
+        10: 'PS3',
+        11: 'Up',
+        12: 'Down',
+        13: 'Left',
+        14: 'Right',
+        15: '15'
+    }
+
     # Button names for PS5 controller
     PS5_button_names = {
         0: 'Cross',
@@ -65,7 +85,7 @@ class InputReader:
         for event in pygame.event.get():
             if event.type == pygame.JOYBUTTONDOWN:
                 # Handle button press
-                print(f"{self.PS5_button_names.get(event.button, 'Unknown')} got pressed")
+                print(f"{self.PS3_button_names.get(event.button, 'Unknown')} got pressed")
             elif event.type == pygame.JOYAXISMOTION:
                 # Handle axis movement
                 axis_value = event.value
