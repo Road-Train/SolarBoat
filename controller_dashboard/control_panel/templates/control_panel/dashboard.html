@@ -6,67 +6,179 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controller Dashboard</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
         .button {
             margin: 5px;
             padding: 10px;
             border: 1px solid #000;
             display: inline-block;
             cursor: pointer;
+            width: 50px;
+            height: 50px;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 50%;
         }
 
+        .dashboard-button,
         .joystick {
-            margin: 10px;
-            padding: 20px;
-            border: 2px solid #000;
+            margin: 5px;
+            padding: 10px;
+            border: 1px solid #000;
             display: inline-block;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 10px;
+            background-color: #003087;
+            /* PlayStation Blue */
+            color: #fff;
+            /* White text */
         }
 
         .control-panel {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .control-buttons,
+        .joysticks {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .control-buttons {
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        
+
+        .controller-elements {
             display: flex;
-            flex-direction: column;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .dpad,
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 50px);
+            grid-template-rows: repeat(3, 50px);
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dpad div:nth-child(2) {
+            grid-column: 2 / 3;
+        }
+
+        .dpad div:nth-child(4) {
+            grid-row: 2 / 3;
+        }
+
+        .dpad div:nth-child(5) {
+            grid-row: 2 / 3;
+            grid-column: 2 / 3;
+        }
+
+        .dpad div:nth-child(6) {
+            grid-row: 2 / 3;
+            grid-column: 3 / 4;
+        }
+
+        .dpad div:nth-child(8) {
+            grid-row: 3 / 4;
+            grid-column: 2 / 3;
+        }
+
+        .action-buttons div:nth-child(2) {
+            grid-column: 2 / 3;
+        }
+
+        .action-buttons div:nth-child(4) {
+            grid-row: 2 / 3;
+        }
+
+        .action-buttons div:nth-child(5) {
+            grid-row: 2 / 3;
+            grid-column: 2 / 3;
+        }
+
+        .action-buttons div:nth-child(6) {
+            grid-row: 2 / 3;
+            grid-column: 3 / 4;
+        }
+
+        .action-buttons div:nth-child(8) {
+            grid-row: 3 / 4;
+            grid-column: 2 / 3;
+        }
+
+        .shoulder-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 0 50px;
         }
     </style>
 </head>
 
 <body>
-    <h1>Controller Dashboard</h1>
+    <h2>Controller Name</h2>
+    <div class="shoulder-buttons">
+        <div class="button" onclick="alert('L1 clicked')">L1</div>
+        <div class="button" onclick="alert('L2 clicked')">L2</div>
+        <div class="button" onclick="alert('R1 clicked')">R1</div>
+        <div class="button" onclick="alert('R2 clicked')">R2</div>
+    </div>
+    <div class="controller-elements">
+        <div class="dpad">
+            <div></div>
+            <div class="button" onclick="alert('Up clicked')">Up</div>
+            <div></div>
+            <div class="button" onclick="alert('Left clicked')">Left</div>
+            <div></div>
+            <div class="button" onclick="alert('Right clicked')">Right</div>
+            <div></div>
+            <div class="button" onclick="alert('Down clicked')">Down</div>
+            <div></div>
+        </div>
+        <div class="action-buttons">
+            <div></div>
+            <div class="button" onclick="alert('Triangle clicked')">Triangle</div>
+            <div></div>
+            <div class="button" onclick="alert('Square clicked')">Square</div>
+            <div></div>
+            <div class="button" onclick="alert('Circle clicked')">Circle</div>
+            <div></div>
+            <div class="button" onclick="alert('Cross clicked')">Cross</div>
+            <div></div>
+        </div>
+    </div>
+
     <div class="control-panel">
         <div class="control-buttons">
-            <div class="button">Start</div>
-            <div class="button">Steering</div>
-            <div class="button">Throttle</div>
-            <div class="button">Action</div>
-            <div class="button">Emergency Stop</div>
+            <div class="dashboard-button" onclick="alert('Start clicked')">Start</div>
+            <div class="dashboard-button" onclick="alert('Steering clicked')">Steering</div>
+            <div class="dashboard-button" onclick="alert('Throttle clicked')">Throttle</div>
+            <div class="dashboard-button" onclick="alert('Action clicked')">Action</div>
+            <div class="dashboard-button" onclick="alert('Emergency Stop clicked')">Emergency Stop</div>
         </div>
         <div class="joysticks">
-            <div class="joystick">Left Joystick</div>
-            <div class="joystick">Right Joystick</div>
-            <div class="joystick">Joystick One</div>
-            <div class="joystick">Joystick Two</div>
-            <div class="joystick">Left Side + Right Side</div>
+            <div class="joystick" onclick="alert('Left Joystick clicked')">Left Joystick</div>
+            <div class="joystick" onclick="alert('Right Joystick clicked')">Right Joystick</div>
+            <div class="joystick" onclick="alert('Joystick One clicked')">Joystick One</div>
+            <div class="joystick" onclick="alert('Joystick Two clicked')">Joystick Two</div>
         </div>
-    </div>
-    <h2>Controller Elements</h2>
-    <div>
-        <div class="button">L1</div>
-        <div class="button">L2</div>
-        <div class="button">R1</div>
-        <div class="button">R2</div>
-        <div class="button">Triangle</div>
-        <div class="button">Circle</div>
-        <div class="button">Cross</div>
-        <div class="button">Square</div>
-    </div>
-    <div>
-        <div class="button">Up</div>
-        <div class="button">Down</div>
-        <div class="button">Left</div>
-        <div class="button">Right</div>
     </div>
 </body>
 
