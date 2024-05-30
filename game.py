@@ -16,7 +16,7 @@ OCEAN = (79, 66, 181)
 
 # Player attributes
 PLAYER_SIZE = 100
-PLAYER_SPEED = 10
+PLAYER_SPEED = 5
 
 # Target attributes
 TARGET_SIZE = 50
