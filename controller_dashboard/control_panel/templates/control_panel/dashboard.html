@@ -36,15 +36,14 @@
             line-height: 30px;
             text-align: center;
             border-radius: 10px;
-            background-color: #003087;
-            /* PlayStation Blue */
+            background-color: lightgray;
             color: #fff;
-            /* White text */
         }
 
         .control-panel {
             display: flex;
-            justify-content: center;
+            justify-content: space-around;
+            align-items: flex-start;
             margin-bottom: 30px;
         }
 
@@ -54,13 +53,6 @@
             flex-direction: column;
             align-items: center;
         }
-
-        .control-buttons {
-            justify-content: space-between;
-            height: 100%;
-        }
-
-        
 
         .controller-elements {
             display: flex;
@@ -127,59 +119,127 @@
         .shoulder-buttons {
             display: flex;
             justify-content: space-between;
-            margin: 0 50px;
+            margin: 20px 50px;
+        }
+
+        .shoulder-buttons .button {
+            border-radius: 10%;
+        }
+
+        .screen {
+            width: 300px;
+            height: 150px;
+            border: 2px solid #000;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .space {
+            width: 20px;
+            height: 100%;
+        }
+
+        .container {
+            border: 2px solid #000;
+            padding: 40px;
+            display: list-item;
+            text-align: center;
+            margin: 30px;
         }
     </style>
 </head>
 
 <body>
     <h2>Controller Name</h2>
-    <div class="shoulder-buttons">
-        <div class="button" onclick="alert('L1 clicked')">L1</div>
-        <div class="button" onclick="alert('L2 clicked')">L2</div>
-        <div class="button" onclick="alert('R1 clicked')">R1</div>
-        <div class="button" onclick="alert('R2 clicked')">R2</div>
-    </div>
-    <div class="controller-elements">
-        <div class="dpad">
-            <div></div>
-            <div class="button" onclick="alert('Up clicked')">Up</div>
-            <div></div>
-            <div class="button" onclick="alert('Left clicked')">Left</div>
-            <div></div>
-            <div class="button" onclick="alert('Right clicked')">Right</div>
-            <div></div>
-            <div class="button" onclick="alert('Down clicked')">Down</div>
-            <div></div>
+    <div class="container">
+        <div class="shoulder-buttons">
+            <div class="button" onclick="alert('L1 clicked')">L1</div>
+            <div class="button" onclick="alert('L2 clicked')">L2</div>
+            <!-- Add the screen -->
+            <div class="screen">Screen</div>
+            <div class="button" onclick="alert('R1 clicked')">R1</div>
+            <div class="button" onclick="alert('R2 clicked')">R2</div>
         </div>
-        <div class="action-buttons">
-            <div></div>
-            <div class="button" onclick="alert('Triangle clicked')">Triangle</div>
-            <div></div>
-            <div class="button" onclick="alert('Square clicked')">Square</div>
-            <div></div>
-            <div class="button" onclick="alert('Circle clicked')">Circle</div>
-            <div></div>
-            <div class="button" onclick="alert('Cross clicked')">Cross</div>
-            <div></div>
+
+        <div class="controller-elements">
+            <div class="dpad">
+                <div></div>
+                <div class="button" onclick="alert('Up clicked')" tabindex="1">Up</div>
+                <div></div>
+                <div class="button" onclick="alert('Left clicked')" tabindex="2">Left</div>
+                <div></div>
+                <div class="button" onclick="alert('Right clicked')" tabindex="3">Right</div>
+                <div></div>
+                <div class="button" onclick="alert('Down clicked')" tabindex="4">Down</div>
+                <div></div>
+            </div>
+
+            <div class="action-buttons">
+                <div></div>
+                <div class="button" onclick="alert('Triangle clicked')" tabindex="5">Triangle</div>
+                <div></div>
+                <div class="button" onclick="alert('Square clicked')" tabindex="6">Square</div>
+                <div></div>
+                <div class="button" onclick="alert('Circle clicked')" tabindex="7">Circle</div>
+                <div></div>
+                <div class="button" onclick="alert('Cross clicked')" tabindex="8">Cross</div>
+                <div></div>
+            </div>
         </div>
     </div>
 
     <div class="control-panel">
         <div class="control-buttons">
-            <div class="dashboard-button" onclick="alert('Start clicked')">Start</div>
-            <div class="dashboard-button" onclick="alert('Steering clicked')">Steering</div>
-            <div class="dashboard-button" onclick="alert('Throttle clicked')">Throttle</div>
-            <div class="dashboard-button" onclick="alert('Action clicked')">Action</div>
-            <div class="dashboard-button" onclick="alert('Emergency Stop clicked')">Emergency Stop</div>
+            <div class="dashboard-button" onclick="alert('Start clicked')" tabindex="9">Start</div>
+            <div class="dashboard-button" onclick="alert('Steering clicked')" tabindex="10">Steering</div>
+            <div class="dashboard-button" onclick="alert('Throttle clicked')" tabindex="11">Throttle</div>
+            <div class="dashboard-button" onclick="alert('Action clicked')" tabindex="12">Action</div>
+            <div class="dashboard-button" onclick="alert('Emergency Stop clicked')" tabindex="13">Emergency Stop</div>
         </div>
+        <div class="space"></div>
         <div class="joysticks">
-            <div class="joystick" onclick="alert('Left Joystick clicked')">Left Joystick</div>
-            <div class="joystick" onclick="alert('Right Joystick clicked')">Right Joystick</div>
-            <div class="joystick" onclick="alert('Joystick One clicked')">Joystick One</div>
-            <div class="joystick" onclick="alert('Joystick Two clicked')">Joystick Two</div>
+            <div class="joystick" onclick="alert('Left Joystick clicked')" tabindex="14">Left Joystick</div>
+            <div class="joystick" onclick="alert('Right Joystick clicked')" tabindex="15">Right Joystick</div>
+            <div class="joystick" onclick="alert('Joystick One clicked')" tabindex="16">Joystick One</div>
+            <div class="joystick" onclick="alert('Joystick Two clicked')" tabindex="17">Joystick Two</div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('keydown', function (event) {
+            const key = event.key.toLowerCase();
+            const buttons = document.querySelectorAll('.button');
+
+            if (key === 'arrowup' || key === 'arrowdown' || key === 'arrowleft' || key === 'arrowright') {
+                event.preventDefault();
+                const currentIndex = Array.from(buttons).findIndex(button => button === document.activeElement);
+                let newIndex;
+
+                switch (key) {
+                    case 'arrowup':
+                        newIndex = currentIndex - 3 >= 0 ? currentIndex - 3 : currentIndex;
+                        break;
+                    case 'arrowdown':
+                        newIndex = currentIndex + 3 < buttons.length ? currentIndex + 3 : currentIndex;
+                        break;
+                    case 'arrowleft':
+                        newIndex = currentIndex - 1 >= 0 ? currentIndex - 1 : currentIndex;
+                        break;
+                    case 'arrowright':
+                        newIndex = currentIndex + 1 < buttons.length ? currentIndex + 1 : currentIndex;
+                        break;
+                    default:
+                        newIndex = currentIndex;
+                        break;
+                }
+
+                buttons[newIndex].focus();
+            }
+        });
+    </script>
 </body>
 
 </html>
