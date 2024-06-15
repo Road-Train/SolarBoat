@@ -18,25 +18,25 @@
 
 <body>
 
-    <div id="Stats-output">
-    </div>
-    <div id="WebGL-output">
-    </div>
+    <div id="Stats-output"></div>
+    <div id="WebGL-output"></div>
 
     <script type="text/javascript">
         $(function () {
 
-            var boat;
+            var boats = [];
             var boatSpeed = 1;
+            var autoBoatSpeed = 1;  // Speed for the automatic boat movement
+            var autoBoatDirection = 1;  // Direction for the automatic boat (1 for right, -1 for left)
 
             // create boat
-            function createBoat() {
+            function createBoat(boatColor) {
                 var boatWidth = 40;
                 var boatHeight = 6;
                 var boatDepth = 10;
 
                 var boatMaterial = new THREE.MeshLambertMaterial({
-                    color: 0xffffff
+                    color: boatColor
                 });
 
                 var boat = new THREE.Mesh(new THREE.CubeGeometry(boatWidth, boatHeight, boatDepth), boatMaterial);
@@ -50,7 +50,7 @@
                 var seatDepth = 6;
 
                 var seatMaterial = new THREE.MeshLambertMaterial({
-                    color: 0x0000ff 
+                    color: 0x0000ff
                 });
 
                 var seat = new THREE.Mesh(new THREE.CubeGeometry(seatWidth, seatHeight, seatDepth), seatMaterial);
@@ -84,9 +84,9 @@
                 return boat;
             }
 
-            function rotateBoat() {
+            function rotateBoat(boat) {
                 boat.rotation.y = boat.rotation.y === 0 ? Math.PI : 0; // rotate to opposite direction
-                boatSpeed *= -2;
+                boatSpeed *= -1;
             }
 
             function addLight(scene) {
@@ -137,7 +137,8 @@
 
             var planeGeometry = new THREE.PlaneGeometry(1000, 500);
             var planeMaterial = new THREE.MeshLambertMaterial({
-                color: 0x1acffa}); 
+                color: 0x1acffa
+            });
             var plane = new THREE.Mesh(planeGeometry, planeMaterial);
             plane.receiveShadow = true;
             plane.rotation.x = -0.5 * Math.PI;
@@ -149,13 +150,22 @@
             camera.position.z = 235;
             camera.lookAt(scene.position);
 
-            boat = createBoat(0x7f0000); 
-            boat.position.z = -200;
-            boat.position.x = 160;
-            boat.step = -1;
-            scene.add(boat);
+            // Create boats
+            boats.push(createBoat(0x7f0000)); // Red boat
+            boats.push(createBoat(0xffd800)); // Yellow boat
 
-            rotateBoat();
+            boats[0].position.z = -200;
+            boats[0].position.x = 160;
+
+            boats[1].position.z = 95;
+            boats[1].position.x = 100;
+
+            boats.forEach(function (boat) {
+                boat.step = -1;
+                scene.add(boat);
+            });
+
+            rotateBoat(boats[1]);
 
             addLight(scene);
 
@@ -177,7 +187,8 @@
                 left: false,
                 right: false,
                 up: false,
-                down: false };
+                down: false
+            };
 
             function onKeyDown(event) {
                 switch (event.keyCode) {
@@ -217,21 +228,30 @@
             document.addEventListener('keyup', onKeyUp, false);
 
             function updateBoatPosition() {
+                // Control boat 0 with arrow keys
                 if (arrowControls.left) {
-                    boat.position.x -= boatSpeed;
+                    boats[0].position.x -= boatSpeed;
                 }
                 if (arrowControls.right) {
-                    boat.position.x += boatSpeed;
+                    boats[0].position.x += boatSpeed;
                 }
                 if (arrowControls.up) {
-                    boat.position.z -= boatSpeed;
+                    boats[0].position.z -= boatSpeed;
                 }
                 if (arrowControls.down) {
-                    boat.position.z += boatSpeed;
+                    boats[0].position.z += boatSpeed;
                 }
 
-                boat.position.x = Math.max(-280, Math.min(280, boat.position.x));
-                boat.position.z = Math.max(-280, Math.min(280, boat.position.z));
+                boats[0].position.x = Math.max(-280, Math.min(280, boats[0].position.x));
+                boats[0].position.z = Math.max(-280, Math.min(280, boats[0].position.z));
+
+                // Automatic movement for boat 1
+                boats[1].position.x += autoBoatSpeed * autoBoatDirection;
+                if (boats[1].position.x >= 280 || boats[1].position.x <= -280) {
+                    autoBoatDirection *= -1; // Reverse direction
+                }
+
+                boats[1].position.x = Math.max(-280, Math.min(280, boats[1].position.x));
             }
 
             var stats = initStats();
@@ -242,7 +262,7 @@
                 stats.update();
                 cameraControls.update();
 
-                // Move the boat based on keyboard arrow controls
+                // Move the boats based on keyboard arrow controls
                 updateBoatPosition();
 
                 requestAnimationFrame(render);
@@ -251,4 +271,5 @@
         });
     </script>
 </body>
+
 </html>
