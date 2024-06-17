@@ -35,5 +35,5 @@ Researchers and engineers are capable of configuring object models with diverse 
 **NVIDIA Omniverse Replicator**, a computing platform that people can use for making accurate and realistic images in Universal Scene Description (OpenUSD) for training an object detection model on the Edge Impulse Platform. It is a highly recommended for 3D format - flexible, scalable, good performance, version control, and has asset management capabilities. For creating realistic and complex datasets, it is a great choice.
 
 # Resource
-[Plunkett, JP. and Bradford, NB., (May 31, 2024). _How to Train an Object Detection Model for Visual Inspection with Synthetic Data_](https://developer.nvidia.com/blog/how-to-train-an-object-detection-model-for-visual-inspection-with-synthetic-data/)
-[...](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://scholar.uwindsor.ca/cgi/viewcontent.cgi?article=9836&context=etd)
+[Plunkett, JP. and Bradford, NB., (May 31, 2024). _How to Train an Object Detection Model for Visual Inspection with Synthetic Data_](https://developer.nvidia.com/blog/how-to-train-an-object-detection-model-for-visual-inspection-with-synthetic-data/) Referenced from June 17, 2024.
+[Sonetta, HYS., (2021). _Bridging the Simulation-to-Reality Gap: Adapting Simulation Environment for Object Recognition_](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://scholar.uwindsor.ca/cgi/viewcontent.cgi?article=9836&context=etd) Referenced from June 17, 2024.
