@@ -25,18 +25,20 @@
         $(function () {
 
             var boats = [];
-            var boatSpeed = 1;
-            var autoBoatSpeed = 1;  // Speed for the automatic boat movement
-            var autoBoatDirection = 1;  // Direction for the automatic boat (1 for right, -1 for left)
+            var params = {
+                boatSpeed: 5,  // Default speed for manual boat
+                autoBoatSpeed: 3  // Default speed for automatic boat
+            };
+            var autoBoatDirection = 1;  
 
             // create boat
-            function createBoat(boatColor) {
+            function createBoat() {
                 var boatWidth = 40;
                 var boatHeight = 6;
                 var boatDepth = 10;
 
                 var boatMaterial = new THREE.MeshLambertMaterial({
-                    color: boatColor
+                    color: 0xffffff
                 });
 
                 var boat = new THREE.Mesh(new THREE.CubeGeometry(boatWidth, boatHeight, boatDepth), boatMaterial);
@@ -86,7 +88,7 @@
 
             function rotateBoat(boat) {
                 boat.rotation.y = boat.rotation.y === 0 ? Math.PI : 0; // rotate to opposite direction
-                boatSpeed *= -1;
+                params.boatSpeed *= -1;
             }
 
             function addLight(scene) {
@@ -137,7 +139,7 @@
 
             var planeGeometry = new THREE.PlaneGeometry(1000, 500);
             var planeMaterial = new THREE.MeshLambertMaterial({
-                color: 0x1acffa
+                color: 0x00008b
             });
             var plane = new THREE.Mesh(planeGeometry, planeMaterial);
             plane.receiveShadow = true;
@@ -145,9 +147,7 @@
             scene.add(plane);
 
             var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
-            camera.position.x = 0;
-            camera.position.y = 165;
-            camera.position.z = 235;
+            camera.position.set(0, 165, 235);
             camera.lookAt(scene.position);
 
             // Create boats
@@ -227,31 +227,37 @@
             document.addEventListener('keydown', onKeyDown, false);
             document.addEventListener('keyup', onKeyUp, false);
 
+            var cameraOffset = new THREE.Vector3(0, 165, 235);
+
             function updateBoatPosition() {
                 // Control boat 0 with arrow keys
                 if (arrowControls.left) {
-                    boats[0].position.x -= boatSpeed;
+                    boats[0].position.x -= params.boatSpeed;
                 }
                 if (arrowControls.right) {
-                    boats[0].position.x += boatSpeed;
+                    boats[0].position.x += params.boatSpeed;
                 }
                 if (arrowControls.up) {
-                    boats[0].position.z -= boatSpeed;
+                    boats[0].position.z -= params.boatSpeed;
                 }
                 if (arrowControls.down) {
-                    boats[0].position.z += boatSpeed;
+                    boats[0].position.z += params.boatSpeed;
                 }
 
                 boats[0].position.x = Math.max(-280, Math.min(280, boats[0].position.x));
                 boats[0].position.z = Math.max(-280, Math.min(280, boats[0].position.z));
 
                 // Automatic movement for boat 1
-                boats[1].position.x += autoBoatSpeed * autoBoatDirection;
+                boats[1].position.x += params.autoBoatSpeed * autoBoatDirection;
                 if (boats[1].position.x >= 280 || boats[1].position.x <= -280) {
                     autoBoatDirection *= -1; // Reverse direction
                 }
 
                 boats[1].position.x = Math.max(-280, Math.min(280, boats[1].position.x));
+
+                // Make the camera follow the boat
+                camera.position.copy(boats[0].position).add(cameraOffset);
+                camera.lookAt(boats[0].position);
             }
 
             var stats = initStats();
@@ -268,6 +274,10 @@
                 requestAnimationFrame(render);
                 renderer.render(scene, camera);
             }
+
+            var gui = new dat.GUI();
+            gui.add(params, 'boatSpeed', 1, 20).name('Boat Speed');
+            gui.add(params, 'autoBoatSpeed', 1, 20).name('Auto Boat Speed');
         });
     </script>
 </body>
