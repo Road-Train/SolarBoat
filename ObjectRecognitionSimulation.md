@@ -40,6 +40,11 @@ Download (Omniverse)[https://developer.nvidia.com/omniverse/simready-assets/] an
 ### SimReady Assets 
 Simulation-Ready Assets are 3D objects that are phyiscally accurate in properties and behavior. It is connected data streams for showing the real world in a simulated digital one. It is built-upon USD. It is avaible in NVIDIA Omniverse. Advantages: reliable starter to train AI models, reflect the real-world in simulated envrionents, has a flexible nature of USD to integrate in any workflow, and consistence. It used for robotics, digital twin warehouses, and autonomous driving.
 
+### NVIDIA Isaac Sim
+This is a reference application to design, simulate, test and train AI-based robots and autonomous machines in a virtual environment that is based on the real world. It is built on NVIDIA Omniverse, extensible and customizable for new or existing projects to test or/and validate pipelines. It includes a physics simulation with NVIDIA PhysX® 5, photorealism with real-time ray and path tracing, also MDL material definition support. It addresses the most common use cases such as manipulation, navigation, and synthetic data generation. For engineers, it is easy to use for designing, importing, building, and sharing robot models and virtual training environments.
+
+More about (Isaac Sim)[https://developer.nvidia.com/isaac/sim]
+
 # Resource
 [Plunkett, JP. and Bradford, NB., (May 31, 2024). _How to Train an Object Detection Model for Visual Inspection with Synthetic Data_](https://developer.nvidia.com/blog/how-to-train-an-object-detection-model-for-visual-inspection-with-synthetic-data/) Referenced from June 17, 2024.
 [Sonetta, HYS., (2021). _Bridging the Simulation-to-Reality Gap: Adapting Simulation Environment for Object Recognition_](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://scholar.uwindsor.ca/cgi/viewcontent.cgi?article=9836&context=etd) Referenced from June 17, 2024.
