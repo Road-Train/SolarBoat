@@ -30,7 +30,7 @@ It is a cross-platform simulation engine for generating a simulated dataset for 
 ### Cinema 4D
 Researchers and engineers are capable of configuring object models with diverse environment setting like weather and lighting conditions. This is a modern state-of-the-art simulator. It was created to map out realisticly textures and areas. For automation parameters, the node-based editor, XPresso is used to replicate into other software. Makes it easier to program camera positions and image post-effects like color, film grain and vignette.
 
-## From synthetic data generation to AI training
+## From Synthetic Data Generation to AI Training
 **Edge Impluse** is an empowered platform to create and deploy AI models for edge devices, supporting data collection, preprocessing, model training, and deployment. Its goal to implement AI capabilities as effectively as possible.
 **NVIDIA Omniverse Replicator**, a computing platform that people can use for making accurate and realistic images in Universal Scene Description (OpenUSD) for training an object detection model on the Edge Impulse Platform. It is a highly recommended for 3D format - flexible, scalable, good performance, version control, and has asset management capabilities. For creating realistic and complex datasets, it is a great choice.
 
