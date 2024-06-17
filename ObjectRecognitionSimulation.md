@@ -45,6 +45,12 @@ This is a reference application to design, simulate, test and train AI-based rob
 
 More about (Isaac Sim)[https://developer.nvidia.com/isaac/sim]
 
+**Important Note on NVIDIA's USD Contributions**
+Material Definition Language (MDL) - easy to share physical materials between supporting applications.
+USD Physics - technical diving into body physics extension.
+Pyhton 3 Bindings - Omniverse Kit uses Pyhton 3 async API for safety and security purposes.
+Prebuilts USD Binaries - for Windows and Linux.
+
 # Resource
 [Plunkett, JP. and Bradford, NB., (May 31, 2024). _How to Train an Object Detection Model for Visual Inspection with Synthetic Data_](https://developer.nvidia.com/blog/how-to-train-an-object-detection-model-for-visual-inspection-with-synthetic-data/) Referenced from June 17, 2024.
 [Sonetta, HYS., (2021). _Bridging the Simulation-to-Reality Gap: Adapting Simulation Environment for Object Recognition_](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://scholar.uwindsor.ca/cgi/viewcontent.cgi?article=9836&context=etd) Referenced from June 17, 2024.
