@@ -39,4 +39,7 @@ Run InputReader.py
 
 ### Dashboard
 pip install Flask
-run python app.py
+Run python app.py
+Open http://127.0.0.1:5000
+If there are .env or .flaskenv files present.
+Run pip install python-dotenv to use them.

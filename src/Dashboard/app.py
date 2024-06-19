@@ -5,7 +5,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 from flask import Flask, render_template
 from src.Game.game import run
 
-app = Flask(__name__, template_folder='Dashboard') 
+template_folder_path = os.path.join(os.path.dirname(__file__), 'templates')
+
+app = Flask(__name__, template_folder=template_folder_path)
 
 @app.route('/')
 def dashboard():
