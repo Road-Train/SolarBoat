@@ -5,34 +5,58 @@
     <title>Dashboard</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #3494e6, #ec6ead);
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        h1 {
+            text-align: center;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
         }
         .button {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 12px 24px;
             margin: 10px;
-            font-size: 16px;
+            font-size: 18px;
             cursor: pointer;
-            background-color: #4CAF50;
+            background-color: #818589;
             color: white;
-            border: none;
+            border: 2px solid #000000;
             border-radius: 5px;
             text-align: center;
             text-decoration: none;
+            transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
         }
         .button:hover {
-            background-color: #45a049;
+            background-color: #3494e6;
+            border-color: #3494e6;
+            transform: scale(1.05);
         }
         #status {
             margin-top: 20px;
             font-size: 18px;
+            text-align: center;
+            color: #fff;
         }
     </style>
 </head>
 <body>
     <h1>Dashboard</h1>
-    <div>
+    <div class="button-container">
         <button class="button" onclick="linkToBoatSimulation()">Boat Simulation</button>
         <button class="button" onclick="checkNUCConnection()">Check NUC Connection</button>
         <button class="button" onclick="linkToObjectRecognition()">Object Recognition Camera</button>
@@ -42,43 +66,6 @@
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // JavaScript code for the Chart (example)
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
         // JavaScript functions for the buttons
         function linkToBoatSimulation() {
             window.location.href = 'boat_simulation.html'; // Replace with the actual link to the boat simulation
@@ -90,10 +77,10 @@
             let statusDiv = document.getElementById('status');
             if (isConnected) {
                 statusDiv.innerHTML = "NUC is connected.";
-                statusDiv.style.color = "green";
+                statusDiv.style.color = "#90EE90";
             } else {
                 statusDiv.innerHTML = "NUC is not connected.";
-                statusDiv.style.color = "red";
+                statusDiv.style.color = "#FFCCCB";
             }
         }
 
@@ -103,11 +90,11 @@
             let statusDiv = document.getElementById('status');
             if (isConnected) {
                 statusDiv.innerHTML = "Camera is connected.";
-                statusDiv.style.color = "green";
+                statusDiv.style.color = "#90EE90";
                 window.location.href = 'object_recognition_camera.html'; // Replace with the actual link to the object recognition camera
             } else {
                 statusDiv.innerHTML = "Camera is not connected.";
-                statusDiv.style.color = "red";
+                statusDiv.style.color = "#FFCCCB";
             }
         }
 

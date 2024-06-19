@@ -73,8 +73,19 @@ def show_intro(screen, font):
         "Use the right thumbstick to also move the player.",
         "Press 'Circle' to show quit confirmation.",
         "Press 'Cross' to confirm quit.",
-        "Press any button to start."
+        "Press any buttons to start."
     ]
+    
+    #waiting = True
+    #while waiting:
+    #    for event in pygame.event.get():
+    #        if event.type == pygame.KEYDOWN:
+    #            if event.key == pygame.K_SPACE:
+    #                waiting = False
+    #        elif event.type == pygame.QUIT:
+    #            pygame.quit()
+    #            exit()
+    
     y_offset = 100
     for instruction in instructions:
         display_message(screen, instruction, font, WHITE, (50, y_offset))
