@@ -94,6 +94,8 @@ def wait_for_start():
                 exit()
 
 def run():
+    pygame.joystick.init()
+    
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("How To Control Boat With Controller")
     
@@ -191,4 +193,4 @@ def confirm_quit(screen, font, joystick):
                 exit()
 
 if __name__ == "__main__":
-    main()
+    run()

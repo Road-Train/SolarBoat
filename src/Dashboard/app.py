@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, threading
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
@@ -15,8 +15,12 @@ def dashboard():
 
 @app.route('/game')
 def game():
-    result = game.run()  
-    return f"Game result: {result}"
+    result = run()
+    game_thread = threading.Thread(target=run)
+    game_thread.start()
+    return "Starting the game..."
+    #f"Game result: {result}"
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
