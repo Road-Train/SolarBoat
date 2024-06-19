@@ -93,7 +93,7 @@ def wait_for_start():
                 pygame.quit()
                 exit()
 
-def main():
+def run():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("How To Control Boat With Controller")
     

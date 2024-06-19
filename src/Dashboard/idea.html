@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <style>
-        /* Your CSS styles here */
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -37,6 +36,7 @@
         <button class="button" onclick="linkToBoatSimulation()">Boat Simulation</button>
         <button class="button" onclick="checkNUCConnection()">Check NUC Connection</button>
         <button class="button" onclick="linkToObjectRecognition()">Object Recognition Camera</button>
+        <button class="button" onclick="linkToGame()">Run Game</button>
     </div>
     <div id="status"></div>
     
@@ -98,7 +98,21 @@
         }
 
         function linkToObjectRecognition() {
-            window.location.href = 'object_recognition_camera.html'; // Replace with the actual link to the object recognition camera
+            // Simulating a check for a camera
+            let isConnected = Math.random() < 0.5; // Simulating camera connection status randomly
+            let statusDiv = document.getElementById('status');
+            if (isConnected) {
+                statusDiv.innerHTML = "Camera is connected.";
+                statusDiv.style.color = "green";
+                window.location.href = 'object_recognition_camera.html'; // Replace with the actual link to the object recognition camera
+            } else {
+                statusDiv.innerHTML = "Camera is not connected.";
+                statusDiv.style.color = "red";
+            }
+        }
+
+        function linkToGame() {
+            window.location.href = '/game'; // This links to the Flask endpoint that runs the game
         }
     </script>
 </body>

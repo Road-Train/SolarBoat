@@ -36,3 +36,7 @@ Run setup.bat
 
 ### Back-end
 Run InputReader.py
+
+### Dashboard
+pip install Flask
+run python app.py
