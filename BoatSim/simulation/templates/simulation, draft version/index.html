@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Boat Simulation with Gerstner Waves</title>
+    <script type="text/javascript" src="libs/three.js"></script>
+    <script type="text/javascript" src="libs/jquery-1.9.0.js"></script>
+    <script type="text/javascript" src="libs/stats.js"></script>
+    <script type="text/javascript" src="libs/dat.gui.js"></script>
+    <script type="text/javascript" src="libs/TrackballControls.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+
+    <script type="x-shader/x-vertex" id="vertexShader">
+        varying vec3 vPosition;
+        void main() {
+            vPosition = position;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragmentShader">
+        uniform float time;
+        uniform vec2 resolution;
+        varying vec3 vPosition;
+
+        // Gerstner wave parameters
+        const float amplitude = 0.6;
+        const float frequency = 0.15;
+        const float steepness = 0.1;
+        const vec2 windDirection = vec2(0.8, 0.6);
+
+        void main() {
+            vec2 uv = gl_FragCoord.xy / resolution.xy;
+            vec2 p = uv - vec2(0.5);
+
+            float phase = dot(windDirection, p) * frequency + time;
+            float cosPhase = cos(phase);
+            float sinPhase = sin(phase);
+
+            float waveHeight = amplitude * (cosPhase * steepness);
+
+            vec3 waveDirection = vec3(-windDirection.x * sinPhase, cosPhase, windDirection.y * sinPhase);
+            vec3 waveNormal = normalize(vec3(waveDirection.x, steepness, waveDirection.z));
+
+            float waveLength = frequency * 10.0;
+            float choppy = 1.0 - pow(1.0 - steepness, 4.0);
+            vec3 viewDir = normalize(vec3(0.0, 1.0, 0.2));
+            float attenuation = 1.0 / sqrt(waveLength * length(waveDirection) * choppy);
+
+            float height = waveHeight * attenuation * waveDirection.y;
+
+            vec3 normal = normalize(waveNormal);
+
+            gl_FragColor = vec4(normal, 1.0);
+        }
+    </script>
+</head>
+
+<body>
+
+    <div id="Stats-output"></div>
+    <div id="WebGL-output"></div>
+
+    <script type="text/javascript">
+        $(function () {
+
+            var boats = [];
+            var params = {
+                boatSpeed: 5,  // Default speed for manual boat
+                autoBoatSpeed: 3  // Default speed for automatic boat
+            };
+            var autoBoatDirection = 1;
+
+            // create boat
+            function createBoat() {
+                var boatWidth = 40;
+                var boatHeight = 6;
+                var boatDepth = 10;
+
+                var boatMaterial = new THREE.MeshLambertMaterial({
+                    color: 0xffffff
+                });
+
+                var boat = new THREE.Mesh(new THREE.BoxGeometry(boatWidth, boatHeight, boatDepth), boatMaterial);
+                boat.castShadow = true;
+
+                boat.position.y = boatHeight / 2;
+
+                // create seat
+                var seatWidth = 10;
+                var seatHeight = 1;
+                var seatDepth = 6;
+
+                var seatMaterial = new THREE.MeshLambertMaterial({
+                    color: 0x0000ff
+                });
+
+                var seat = new THREE.Mesh(new THREE.BoxGeometry(seatWidth, seatHeight, seatDepth), seatMaterial);
+                seat.castShadow = true;
+
+                seat.position.set(-boatWidth / 5 - seatWidth / 2, boatHeight / 2 + seatHeight / 2, 0); // Adjust position to move the seat closer to the front part
+
+                boat.add(seat);
+
+                // create front part
+                var bowGeometry = new THREE.Geometry();
+                bowGeometry.vertices.push(new THREE.Vector3(0, boatHeight / 2, boatDepth / 2));
+                bowGeometry.vertices.push(new THREE.Vector3(0, -boatHeight / 2, boatDepth / 2));
+                bowGeometry.vertices.push(new THREE.Vector3(0, boatHeight / 2, -boatDepth / 2));
+                bowGeometry.vertices.push(new THREE.Vector3(0, -boatHeight / 2, -boatDepth / 2));
+                bowGeometry.vertices.push(new THREE.Vector3(-15, boatHeight / 2, 0));
+
+                bowGeometry.faces.push(new THREE.Face3(0, 2, 4));
+                bowGeometry.faces.push(new THREE.Face3(4, 1, 0));
+                bowGeometry.faces.push(new THREE.Face3(4, 3, 1));
+                bowGeometry.faces.push(new THREE.Face3(2, 3, 4));
+                bowGeometry.computeFaceNormals();
+
+                var bowMaterial = new THREE.MeshLambertMaterial({
+                    color: 0xffffff
+                });
+
+                var bow = new THREE.Mesh(bowGeometry, bowMaterial);
+                bow.castShadow = true;
+
+                bow.position.set(-boatWidth / 2, 0, 0);
+
+                boat.add(bow);
+
+                return boat;
+            }
+
+            function rotateBoat(boat) {
+                boat.rotation.y = boat.rotation.y === 0 ? Math.PI : 0; // rotate to opposite direction
+                params.boatSpeed *= -1;
+            }
+
+            function addLight(scene) {
+                var hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
+                hemiLight.position.set(0, 500, 0);
+                scene.add(hemiLight);
+
+                var dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
+                dirLight.castShadow = true;
+                dirLight.position.set(265, 150, -265);
+
+                dirLight.shadow.mapSize.width = 8192;
+                dirLight.shadow.mapSize.height = 8192;
+
+                var lightDist = 800;
+                dirLight.shadow.camera.left = -lightDist;
+                dirLight.shadow.camera.right = lightDist;
+                dirLight.shadow.camera.top = lightDist;
+                dirLight.shadow.camera.bottom = -lightDist;
+
+                dirLight.shadow.camera.far = 3500;
+                dirLight.shadow.bias = 0.001;
+                dirLight.shadow.darkness = 0.35;
+
+                scene.add(dirLight);
+            }
+
+            function initStats() {
+                var stats = new Stats();
+                stats.setMode(0);
+                stats.domElement.style.position = 'absolute';
+                stats.domElement.style.left = '0px';
+                stats.domElement.style.top = '0px';
+
+                document.getElementById("Stats-output").appendChild(stats.domElement);
+
+                return stats;
+            }
+
+            var scene = new THREE.Scene();
+
+            var renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
+            renderer.setClearColor(0x9fd2f1, 1.0);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true;
+
+            var planeGeometry = new THREE.PlaneGeometry(1000, 500, 100, 50);
+            var planeMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    time: { value: 0.0 },
+                    resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+                },
+                vertexShader: document.getElementById('vertexShader').textContent,
+                fragmentShader: document.getElementById('fragmentShader').textContent
+            });
+            var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+            plane.receiveShadow = true;
+            plane.rotation.x = -0.5 * Math.PI;
+            scene.add(plane);
+
+            var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+            camera.position.set(0, 165, 235);
+            camera.lookAt(scene.position);
+
+            // Create boats
+            boats.push(createBoat()); // Red boat
+            boats.push(createBoat()); // Yellow boat
+
+            boats[0].position.z = -200;
+            boats[0].position.x = 160;
+
+            boats[1].position.z = 95;
+            boats[1].position.x = 100;
+
+            boats.forEach(function (boat) {
+                boat.step = -1;
+                scene.add(boat);
+            });
+
+            rotateBoat(boats[1]);
+
+            addLight(scene);
+
+            // Add the output of the renderer to the HTML element
+            document.getElementById("WebGL-output").appendChild(renderer.domElement);
+
+            // Add ability to rotate/move/zoom camera
+            var cameraControls = new THREE.TrackballControls(camera, renderer.domElement);
+            cameraControls.rotateSpeed = 2.0;
+            cameraControls.zoomSpeed = 2.0;
+            cameraControls.panSpeed = 2.0;
+            cameraControls.noZoom = false;
+            cameraControls.noPan = false;
+            cameraControls.staticMoving = true;
+            cameraControls.dynamicDampingFactor = 0.3;
+
+            // Keyboard arrow controls
+            var arrowControls = {
+                left: false,
+                right: false,
+                up: false,
+                down: false
+            };
+
+            function onKeyDown(event) {
+                switch (event.keyCode) {
+                    case 37: // Left arrow
+                        arrowControls.left = true;
+                        break;
+                    case 39: // Right arrow
+                        arrowControls.right = true;
+                        break;
+                    case 38: // Up arrow
+                        arrowControls.up = true;
+                        break;
+                    case 40: // Down arrow
+                        arrowControls.down = true;
+                        break;
+                }
+            }
+
+            function onKeyUp(event) {
+                switch (event.keyCode) {
+                    case 37: // Left arrow
+                        arrowControls.left = false;
+                        break;
+                    case 39: // Right arrow
+                        arrowControls.right = false;
+                        break;
+                    case 38: // Up arrow
+                        arrowControls.up = false;
+                        break;
+                    case 40: // Down arrow
+                        arrowControls.down = false;
+                        break;
+                }
+            }
+
+            document.addEventListener('keydown', onKeyDown, false);
+            document.addEventListener('keyup', onKeyUp, false);
+
+            var cameraOffset = new THREE.Vector3(0, 165, 235);
+
+            function updateBoatPosition() {
+                // Control boat 0 with arrow keys
+                if (arrowControls.left) {
+                    boats[0].position.x -= params.boatSpeed;
+                }
+                if (arrowControls.right) {
+                    boats[0].position.x += params.boatSpeed;
+                }
+                if (arrowControls.up) {
+                    boats[0].position.z -= params.boatSpeed;
+                }
+                if (arrowControls.down) {
+                    boats[0].position.z += params.boatSpeed;
+                }
+
+                boats[0].position.x = Math.max(-280, Math.min(280, boats[0].position.x));
+                boats[0].position.z = Math.max(-280, Math.min(280, boats[0].position.z));
+
+                // Automatic movement for boat 1
+                boats[1].position.x += params.autoBoatSpeed * autoBoatDirection;
+                if (boats[1].position.x >= 280 || boats[1].position.x <= -280) {
+                    autoBoatDirection *= -1; // Reverse direction
+                }
+
+                boats[1].position.x = Math.max(-280, Math.min(280, boats[1].position.x));
+
+                // Make the camera follow the boat
+                camera.position.copy(boats[0].position).add(cameraOffset);
+                camera.lookAt(boats[0].position);
+            }
+
+            var stats = initStats();
+
+            render();
+
+            function render() {
+                stats.update();
+                cameraControls.update();
+
+                // Update time for the shader
+                planeMaterial.uniforms.time.value += 0.1;
+
+                // Move the boats based on keyboard arrow controls
+                updateBoatPosition();
+
+                requestAnimationFrame(render);
+                renderer.render(scene, camera);
+            }
+
+            var gui = new dat.GUI();
+            gui.add(params, 'boatSpeed', 1, 20).name('Boat Speed');
+            gui.add(params, 'autoBoatSpeed', 1, 20).name('Auto Boat Speed');
+        });
+    </script>
+</body>
+
+</html>
