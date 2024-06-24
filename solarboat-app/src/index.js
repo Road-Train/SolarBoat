@@ -1,8 +1,11 @@
-import { createRoot } from 'react-dom/client';
+// src/react-app.jsx or src/index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App'; 
 
-// Clear the existing HTML content
-document.body.innerHTML = '<div id="app"></div>';
-
-// Render your React component instead
-const root = createRoot(document.getElementById('app'));
-root.render(<h1>Hello, world</h1>);
+ReactDOM.render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>,
+    document.getElementById('root')
+);
