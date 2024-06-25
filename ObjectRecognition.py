@@ -24,7 +24,7 @@ options = ObjectDetectorOptions(
     max_results=5,
     running_mode=VisionRunningMode.LIVE_STREAM,
     result_callback=print_result,
-    score_threshold=0.2,
+    score_threshold=0.3,
     category_allowlist="boat"
 )
 detector = ObjectDetector.create_from_options(options)

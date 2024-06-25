@@ -10,7 +10,7 @@ let orbitControls, water, sun;
 let useMainCamera = true;
 const loader = new OBJLoader();
 const buoys = [];
-
+const renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
 
 
 class Boat
@@ -324,15 +324,17 @@ function updateCamera()
 {
 	const boatPosition = manualBoat.getPosition();
 	const boatRotation = manualBoat.getRotation();
-	if(!useMainCamera)
+	if (!useMainCamera)
 	{
 		orbitControls.target.set(
-			boatPosition.x - Math.sin(boatRotation.y) * 60,  // Adjust the distance
+			boatPosition.x - Math.sin(boatRotation.y) * 65,  // Adjust the distance
 			boatPosition.y + 25,  // Adjust the height
-			boatPosition.z - Math.cos(boatRotation.y) * 60   // Adjust the distance
+			boatPosition.z - Math.cos(boatRotation.y) * 65   // Adjust the distance
 		);
 		orbitControls.minDistance = 0;
-		orbitControls.maxDistance = 0;
+		orbitControls.maxDistance = 1;
+		detectorCam.rotation.y = Math.PI;
+		detectorCam.lookAt(boatPosition);
 	}
 	else
 	{
@@ -354,6 +356,12 @@ function render()
 {
 	water.material.uniforms['time'].value += 1.0 / 60.0;
 	renderer.render(scene, orbitControls.object);
+}
+function renderToTarget()
+{
+	renderer.setRenderTarget(renderTarget);
+	renderer.render(scene, detectorCam);
+	renderer.setRenderTarget(null); // Reset render target
 }
 
 init();
