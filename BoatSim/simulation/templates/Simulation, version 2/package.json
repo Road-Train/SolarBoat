@@ -11,5 +11,10 @@
   },
   "dependencies": {
     "three": "^0.134.0"
-  }
+  },
+  "description": "![Game preview](assets/preview.png)",
+  "main": "main.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
