@@ -25,7 +25,7 @@ options = ObjectDetectorOptions(
     running_mode=VisionRunningMode.LIVE_STREAM,
     result_callback=print_result,
     score_threshold=0.2,
-    category_allowlist='boat'
+    category_allowlist="boat"
 )
 detector = ObjectDetector.create_from_options(options)
 
@@ -49,6 +49,7 @@ def capture_window(window_title):
         return
     
     window = windows[0]
+    window.activate()
 
     while True:
         bbox = (window.left, window.top, window.right, window.bottom)
