@@ -41,6 +41,31 @@ def draw_bounding_boxes(image, detection_result):
             confidence = detection.categories[0].score
             text = f'{label} ({confidence:.2f})'
             cv2.putText(image, text, (start_point[0], start_point[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+def process_webcam():
+    global latest_detection_result
+    video = cv2.VideoCapture(0)
+
+    if not video.isOpened():
+        print("Error: Could not open webcam.")
+        return
+
+    while True:
+        success, image = video.read()
+
+        if not success:
+            break
+        # Ensure the image is in RGB format
+        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=image_rgb)
+        frame_timestamp_ms = int(time.time() * 1000)  # Current time in milliseconds
+        detector.detect_async(mp_image, frame_timestamp_ms)
+        if latest_detection_result:
+            draw_bounding_boxes(image, latest_detection_result)
+        cv2.imshow('Object Detection', image)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+    video.release()
+    cv2.destroyAllWindows()
 
 def capture_window(window_title):
     windows = gw.getWindowsWithTitle(window_title)
@@ -76,4 +101,5 @@ def capture_window(window_title):
 
 if __name__ == "__main__":
     window_title = "Boat Simulation - Opera"  # Change this to your browser window's title
-    capture_window(window_title)
+    capture_window(window_title) # Boat Simulation
+    # process_webcam() # Camera
