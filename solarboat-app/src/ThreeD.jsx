@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 
 const ThreeDSimulation = () => {
@@ -14,3 +15,4 @@ const ThreeDSimulation = () => {
 };
 
 export default ThreeDSimulation;
+*/

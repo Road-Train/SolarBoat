@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 
 const ObjectRecognition = () => {
@@ -14,3 +15,4 @@ const ObjectRecognition = () => {
 };
 
 export default ObjectRecognition;
+*/

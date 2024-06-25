@@ -1,3 +1,4 @@
+/*
 import React, { useState, useEffect } from 'react';
 
 const NUCConnection = () => {
@@ -28,3 +29,4 @@ const NUCConnection = () => {
 };
 
 export default NUCConnection;
+*/

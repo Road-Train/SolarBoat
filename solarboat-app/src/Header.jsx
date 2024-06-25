@@ -8,8 +8,8 @@ const Header = () => {
         <nav>
           <ul className="flex space-x-4">
             <li><a href="#" className="hover:text-gray-200">Home</a></li>
-            <li><a href="#" className="hover:text-gray-200">Settings</a></li>
-            <li><a href="#" className="hover:text-gray-200">Profile</a></li>
+            <li><a href="#" className="hover:text-gray-200">GitHub</a></li>
+            <li><a href="#" className="hover:text-gray-200">GitLab</a></li>
           </ul>
         </nav>
       </div>
