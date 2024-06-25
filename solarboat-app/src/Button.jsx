@@ -1,4 +1,3 @@
-// Button.js
 import React from 'react';
 
 const Button = ({ title, onClick }) => {
