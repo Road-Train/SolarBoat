@@ -7,9 +7,10 @@ const Header = () => {
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <nav>
           <ul className="flex space-x-4">
-            <li><a href="#" className="hover:text-gray-200">Home</a></li>
-            <li><a href="#" className="hover:text-gray-200">GitHub</a></li>
-            <li><a href="#" className="hover:text-gray-200">GitLab</a></li>
+            
+            <li><a href="./public/index.html" className="hover:text-gray-200">Home</a></li>
+            <li><a href="./public/index.html" className="hover:text-gray-200">GitHub</a></li>
+            <li><a href="./public/index.html" className="hover:text-gray-200">GitLab</a></li>
           </ul>
         </nav>
       </div>
