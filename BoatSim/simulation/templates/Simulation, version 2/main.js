@@ -7,21 +7,24 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
 let orbitCam, detectorCam, scene, renderer;
 let orbitControls, water, sun;
-let useMainCamera = true;
+let leftCamera,rightCamera;
+let cameras = []
+let activeCam = 0;
+let manualBoat, autonomousBoat;
 const loader = new OBJLoader();
 const buoys = [];
 const renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
 
-
 class Boat
 {
-	constructor(startPosition)
+	constructor(startPosition, addCameras)
 	{
 		this.velocity = 0;
 		this.rotationSpeed = 0;
 		this.targetVel = 0;
 		this.targetRot = 0;
 		this.acceleration = 0.02;
+		this.boat = null;
 
 		loader.load("/assets/boat/sail.obj", (obj) => 
 		{
@@ -34,13 +37,45 @@ class Boat
 			});
 
 			obj.scale.set(3, 3, 3);
-			obj.position.copy(startPosition);
-			obj.rotation.y = 1.5;
-			scene.add(obj);
-			this.boat = obj;
+			obj.position.set(0,0,0)
+			this.boat = new THREE.Object3D();
+			this.boat.position.copy(startPosition);
+			this.boat.rotation.y = 1.5;
+			this.boat.add(obj);
+			scene.add(this.boat);
+			if(addCameras)
+			{
+				this.addCameras();
+			}
+			
 		});
 	}
+	addCameras()
+	{
+		orbitCam = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 20000);
+		leftCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+		rightCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+		detectorCam = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 20000);
+		cameras = [orbitCam, detectorCam, leftCamera, rightCamera];
+		
+		orbitCam.position.copy(this.boat.position);
+		detectorCam.position.set(0, 30, -60);
+		leftCamera.position.set(-5, 30, -60);
+		rightCamera.position.set(5, 30, -60);
 
+		this.boat.add(orbitCam);
+		this.boat.add(detectorCam);
+		this.boat.add(leftCamera);
+		this.boat.add(rightCamera);
+		orbitControls = new OrbitControls(orbitCam, renderer.domElement);
+		orbitControls.maxPolarAngle = Math.PI * 0.495;
+		orbitControls.target.copy(this.boat.position);
+		orbitControls.target.y+=30;
+		orbitControls.minDistance = 60.0;
+		orbitControls.maxDistance = 200.0;
+		this.boat.add(orbitControls);
+		orbitControls.update();
+	}
 	setSpeed(targetVel, targetRot) 
 	{
 		this.targetVel = targetVel;
@@ -95,34 +130,17 @@ class Boat
 	}
 }
 
-// Initialize two boats with different starting positions
-const manualBoat = new Boat(new THREE.Vector3(5, -18, 50));  // Keyboard-controlled boat
-const autonomousBoat = new Boat(new THREE.Vector3(10, -18, 55)); // Autonomous boat
-
 function init()
 {
+	scene = new THREE.Scene();
+	manualBoat = new Boat(new THREE.Vector3(5, -18, 50),true);  // Keyboard-controlled boat
+	autonomousBoat = new Boat(new THREE.Vector3(10, -18, 55),false); // Autonomous boat
 	renderer = new THREE.WebGLRenderer();
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.toneMapping = THREE.ACESFilmicToneMapping;
 	document.body.appendChild(renderer.domElement);
 
-	scene = new THREE.Scene();
-
-	orbitCam = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 20000);
-	orbitCam.position.set(30, 30, 100);
-	// Initialize detectorCam
-	detectorCam = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 20000);
-	const boatPosition = manualBoat.getPosition();
-	const boatRotation = manualBoat.getRotation();
-	detectorCam.position.set(
-		boatPosition.x - Math.sin(boatRotation.y) * 60,  // Adjust the distance
-		boatPosition.y + 25,  // Adjust the height
-		boatPosition.z - Math.cos(boatRotation.y) * 60   // Adjust the distance
-	);
-	detectorCam.lookAt(boatPosition);
-	scene.add(orbitCam);
-	scene.add(detectorCam);
 	sun = new THREE.Vector3();
 
 	const waterGeometry = new THREE.PlaneGeometry(10000, 10000);
@@ -172,12 +190,6 @@ function init()
 
 	updateSun();
 
-	orbitControls = new OrbitControls(orbitCam, renderer.domElement);
-	orbitControls.maxPolarAngle = Math.PI * 0.495;
-	orbitControls.target.set(0, 10, 0);
-	orbitControls.minDistance = 40.0;
-	orbitControls.maxDistance = 200.0;
-	orbitControls.update();
 	window.addEventListener('resize', onWindowResize);
 	window.addEventListener('keydown', onKeyDown);
 	window.addEventListener('keyup', onKeyUp);
@@ -232,8 +244,42 @@ function init()
 		scene.add(obj);
 		buoys.push(obj);
 	});
+
+	//we do a funny
+	new THREE.TextureLoader().load('checkerboard.png', (texture) =>
+	{
+		const checkerboardMaterial = new THREE.MeshBasicMaterial({ map: texture });
+		const checkerboardGeometry = new THREE.PlaneGeometry(100, 100); // Adjust size as needed
+		const checkerboardMesh = new THREE.Mesh(checkerboardGeometry, checkerboardMaterial);
+		checkerboardMesh.position.set(0, 50, 0); // Adjust position as needed
+		scene.add(checkerboardMesh);
+	});
+	// Add Ambient Light
+	const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // soft white light
+	scene.add(ambientLight);
+
+	// Add Directional Light
+	const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // white light
+	directionalLight.position.set(50, 50, 50);
+	directionalLight.castShadow = true;
+	scene.add(directionalLight);
+	animate();
+}
+function captureImage(camera, filename)
+{
+	renderer.render(scene, camera);
+	const imageData = renderer.domElement.toDataURL('image/png');
+	downloadImage(imageData, filename);
 }
 
+function downloadImage(data, filename)
+{
+	const link = document.createElement('a');
+	link.href = data;
+	link.download = filename;
+	link.click();
+	renderer.render(scene, cameras[activeCam]);
+}
 function onWindowResize()
 {
 	orbitCam.aspect = window.innerWidth / window.innerHeight;
@@ -268,6 +314,11 @@ function onKeyDown(event)
 		console.log("V");
 		switchCamera();
 	}
+	if (keys['c'])
+	{
+		captureImage(leftCamera, 'left_camera_image.png');
+		captureImage(rightCamera, 'right_camera_image.png');
+	}
 }
 
 function onKeyUp(event)
@@ -285,26 +336,11 @@ function onKeyUp(event)
 }
 function switchCamera()
 {
-	useMainCamera = !useMainCamera;
-	const boatPosition = manualBoat.getPosition();
-	const boatRotation = manualBoat.getRotation();
-	if (useMainCamera)
+	activeCam++;
+	if(activeCam>=cameras.length)
 	{
-		// Activate main camera (camera)
-		// camera.position.copy(detectorCam.position);
-		// camera.quaternion.copy(detectorCam.quaternion);
-		orbitControls.object = orbitCam;
-	} else
-	{
-		// Activate detectorCam
-		orbitControls.target.set(
-			boatPosition.x - Math.sin(boatRotation.y) * 60,  // Adjust the distance
-			boatPosition.y + 25,  // Adjust the height
-			boatPosition.z - Math.cos(boatRotation.y) * 60   // Adjust the distance
-		);
-		orbitControls.object = detectorCam;
+		activeCam=0;
 	}
-	orbitControls.update();
 }
 function updateAutonomousBoat()
 {
@@ -318,7 +354,7 @@ function animate()
 	render();
 	manualBoat.update();
 	updateAutonomousBoat();
-	updateCamera();
+	// updateCamera();
 }
 function updateCamera()
 {
@@ -354,8 +390,16 @@ function updateCamera()
 }
 function render()
 {
+	const boatPosition = manualBoat.getPosition();
+	const boatRotation = manualBoat.getRotation();
+	orbitControls.target.set(
+		boatPosition.x - Math.sin(boatRotation.y),  // Adjust the distance
+		boatPosition.y + 25,  // Adjust the height
+		boatPosition.z - Math.cos(boatRotation.y)   // Adjust the distance
+	);
+	orbitControls.update();
 	water.material.uniforms['time'].value += 1.0 / 60.0;
-	renderer.render(scene, orbitControls.object);
+	renderer.render(scene, cameras[activeCam]);
 }
 function renderToTarget()
 {
@@ -363,6 +407,9 @@ function renderToTarget()
 	renderer.render(scene, detectorCam);
 	renderer.setRenderTarget(null); // Reset render target
 }
-
+function debugCameraView(camera)
+{
+	// Temporarily set the active camera of the renderer
+	renderer.render(scene, camera);
+}
 init();
-animate();
