@@ -3,7 +3,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { Water } from 'three/examples/jsm/objects/Water.js';
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 
 let orbitCam, detectorCam, scene, renderer;
 let orbitControls, water, sun;
@@ -11,7 +12,9 @@ let leftCamera,rightCamera;
 let cameras = []
 let activeCam = 0;
 let manualBoat, autonomousBoat;
-const loader = new OBJLoader();
+let checkerboardMesh;
+const objLoader = new OBJLoader();
+const fbxLoader = new FBXLoader();
 const buoys = [];
 const renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
 
@@ -25,10 +28,9 @@ class Boat
 		this.targetRot = 0;
 		this.acceleration = 0.02;
 		this.boat = null;
-
-		loader.load("/assets/boat/sail.obj", (obj) => 
+		fbxLoader.load('/assets/boat/sail.fbx', (fbx) =>
 		{
-			obj.traverse(function (child) 
+			fbx.traverse(function (child) 
 			{
 				if (child instanceof THREE.Mesh) 
 				{
@@ -36,18 +38,19 @@ class Boat
 				}
 			});
 
-			obj.scale.set(3, 3, 3);
-			obj.position.set(0,0,0)
+			fbx.scale.set(0.025, 0.025, 0.025);
+			fbx.position.set(0, 0, 0);
+
 			this.boat = new THREE.Object3D();
 			this.boat.position.copy(startPosition);
 			this.boat.rotation.y = 1.5;
-			this.boat.add(obj);
+			this.boat.add(fbx);
 			scene.add(this.boat);
-			if(addCameras)
+
+			if (addCameras) 
 			{
 				this.addCameras();
 			}
-			
 		});
 	}
 	addCameras()
@@ -58,7 +61,7 @@ class Boat
 		detectorCam = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 20000);
 		cameras = [orbitCam, detectorCam, leftCamera, rightCamera];
 		
-		orbitCam.position.copy(this.boat.position);
+		orbitCam.position.set(0,30,-30);
 		detectorCam.position.set(0, 30, -60);
 		leftCamera.position.set(-5, 30, -60);
 		rightCamera.position.set(5, 30, -60);
@@ -73,7 +76,7 @@ class Boat
 		orbitControls.target.y+=30;
 		orbitControls.minDistance = 60.0;
 		orbitControls.maxDistance = 200.0;
-		this.boat.add(orbitControls);
+		scene.add(orbitControls);
 		orbitControls.update();
 	}
 	setSpeed(targetVel, targetRot) 
@@ -193,66 +196,38 @@ function init()
 	window.addEventListener('resize', onWindowResize);
 	window.addEventListener('keydown', onKeyDown);
 	window.addEventListener('keyup', onKeyUp);
-
-	// Load and add the first buoy to the scene
-	loader.load('/assets/boat/Low_Poly_Buoy.obj', (obj) =>
-	{
-		obj.traverse(function (child)
+	let bouys = [[700, -5, 250], [-400, -5, -100], [50, -5, -20]]
+	for(let i=0; i < bouys.length; i++)
 		{
-			if (child instanceof THREE.Mesh)
-			{
-				child.material.side = THREE.DoubleSide;
-			}
-		});
-
-		obj.scale.set(5, 5, 5);
-		obj.position.set(700, -5, 250); // Adjust the position as needed
-		scene.add(obj);
-		buoys.push(obj);
-	});
-
-	// Load and add the second buoy to the scene
-	loader.load('/assets/boat/Low_Poly_Buoy.obj', (obj) =>
-	{
-		obj.traverse(function (child)
+		objLoader.load('/assets/boat/Low_Poly_Buoy.obj', (obj) =>
 		{
-			if (child instanceof THREE.Mesh)
+			obj.traverse(function (child)
 			{
-				child.material.side = THREE.DoubleSide;
-			}
+				if (child instanceof THREE.Mesh)
+				{
+					child.material.side = THREE.DoubleSide;
+				}
+			});
+
+			obj.scale.set(5, 5, 5);
+			obj.position.set(bouys[i][0], bouys[i][1], bouys[i][2]); // Adjust the position as needed
+			scene.add(obj);
+			buoys.push(obj);
 		});
+		}
 
-		obj.scale.set(5, 5, 5);
-		obj.position.set(-400, -5, -100); // Adjust the position as needed
-		scene.add(obj);
-		buoys.push(obj);
-	});
-
-	// Load and add the third buoy to the scene
-	loader.load('/assets/boat/Low_Poly_Buoy.obj', (obj) =>
-	{
-		obj.traverse(function (child)
-		{
-			if (child instanceof THREE.Mesh)
-			{
-				child.material.side = THREE.DoubleSide;
-			}
-		});
-
-		obj.scale.set(5, 5, 5);
-		obj.position.set(50, -5, -20); // Adjust the position as needed
-		scene.add(obj);
-		buoys.push(obj);
-	});
-
-	//we do a funny
-	new THREE.TextureLoader().load('checkerboard.png', (texture) =>
+	//Camera calibration, this is temporary.
+	new THREE.TextureLoader().load('assets/checkerboard.png', (texture) =>
 	{
 		const checkerboardMaterial = new THREE.MeshBasicMaterial({ map: texture });
-		const checkerboardGeometry = new THREE.PlaneGeometry(100, 100); // Adjust size as needed
-		const checkerboardMesh = new THREE.Mesh(checkerboardGeometry, checkerboardMaterial);
-		checkerboardMesh.position.set(0, 50, 0); // Adjust position as needed
+		const checkerboardGeometry = new THREE.PlaneGeometry(150, 100); // Adjust size as needed
+		checkerboardMesh = new THREE.Mesh(checkerboardGeometry, checkerboardMaterial);
+		checkerboardMesh.position.set(-200, 12, 35); // Adjust position as needed
+		checkerboardMesh.rotation.y=1.5;
 		scene.add(checkerboardMesh);
+	}, undefined, (err) => 
+	{
+		console.error('An error occurred loading the texture:', err);
 	});
 	// Add Ambient Light
 	const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // soft white light
@@ -264,6 +239,25 @@ function init()
 	directionalLight.castShadow = true;
 	scene.add(directionalLight);
 	animate();
+}
+function captureImages()
+{
+	let captureCount = 1;
+	const maxCaptures = 10;
+	checkerboardMesh.rotation.y =2;
+	while(captureCount <= maxCaptures)
+	{
+
+		captureImage(leftCamera, `left_camera_image_${captureCount}.png`);
+		captureImage(rightCamera, `right_camera_image_${captureCount}.png`);
+		checkerboardMesh.rotation.y-=0.1;
+		console.log(`Captured set ${captureCount + 1}`);
+		captureCount++;
+	}
+	checkerboardMesh.rotation.y = 1.5;
+	console.log('Finished capturing images');
+	return;
+	
 }
 function captureImage(camera, filename)
 {
@@ -316,8 +310,7 @@ function onKeyDown(event)
 	}
 	if (keys['c'])
 	{
-		captureImage(leftCamera, 'left_camera_image.png');
-		captureImage(rightCamera, 'right_camera_image.png');
+		captureImages();
 	}
 }
 
@@ -354,50 +347,23 @@ function animate()
 	render();
 	manualBoat.update();
 	updateAutonomousBoat();
-	// updateCamera();
+	updateCamera();
 }
 function updateCamera()
 {
 	const boatPosition = manualBoat.getPosition();
 	const boatRotation = manualBoat.getRotation();
-	if (!useMainCamera)
-	{
-		orbitControls.target.set(
-			boatPosition.x - Math.sin(boatRotation.y) * 65,  // Adjust the distance
-			boatPosition.y + 25,  // Adjust the height
-			boatPosition.z - Math.cos(boatRotation.y) * 65   // Adjust the distance
-		);
-		orbitControls.minDistance = 0;
-		orbitControls.maxDistance = 1;
-		detectorCam.rotation.y = Math.PI;
-		detectorCam.lookAt(boatPosition);
-	}
-	else
-	{
-		// Update the camera position based on boat position and rotation
-		orbitControls.target.set(
-			boatPosition.x - Math.sin(boatRotation.y),  // Adjust the distance
-			boatPosition.y + 25,  // Adjust the height
-			boatPosition.z - Math.cos(boatRotation.y)   // Adjust the distance
-		);
-		orbitControls.minDistance = 40;
-		orbitControls.maxDistance = 200;
-		orbitCam.lookAt(boatPosition);
-	}
-
+	// Update the camera position based on boat position and rotation
+	orbitControls.target.set(
+		boatPosition.x - Math.sin(boatRotation.y),  // Adjust the distance
+		boatPosition.y + 30,  // Adjust the height
+		boatPosition.z - Math.cos(boatRotation.y)   // Adjust the distance
+	);
 	// Update OrbitControls state
 	orbitControls.update();
 }
 function render()
 {
-	const boatPosition = manualBoat.getPosition();
-	const boatRotation = manualBoat.getRotation();
-	orbitControls.target.set(
-		boatPosition.x - Math.sin(boatRotation.y),  // Adjust the distance
-		boatPosition.y + 25,  // Adjust the height
-		boatPosition.z - Math.cos(boatRotation.y)   // Adjust the distance
-	);
-	orbitControls.update();
 	water.material.uniforms['time'].value += 1.0 / 60.0;
 	renderer.render(scene, cameras[activeCam]);
 }

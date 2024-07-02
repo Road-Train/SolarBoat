@@ -31,3 +31,4 @@ bin/
 
 ### Other ###
 __pycache__/
+calibration/*
