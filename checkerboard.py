@@ -10,4 +10,4 @@ def create_checkerboard(rows, cols, square_size, filename):
     cv2.imwrite(filename, checkerboard)
 
 # Example usage
-create_checkerboard(8, 12, 50, 'checkerboard.png')
+create_checkerboard(8, 8, 50, 'checkerboard.png')

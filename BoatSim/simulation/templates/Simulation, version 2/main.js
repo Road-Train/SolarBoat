@@ -56,10 +56,10 @@ class Boat
 	addCameras()
 	{
 		orbitCam = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 20000);
-		leftCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-		rightCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+		leftCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
+		rightCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
 		detectorCam = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 20000);
-		cameras = [orbitCam, detectorCam, leftCamera, rightCamera];
+		cameras = [orbitCam, detectorCam];
 		
 		orbitCam.position.set(0,30,-30);
 		detectorCam.position.set(0, 30, -60);
@@ -137,7 +137,7 @@ function init()
 {
 	scene = new THREE.Scene();
 	manualBoat = new Boat(new THREE.Vector3(5, -18, 50),true);  // Keyboard-controlled boat
-	autonomousBoat = new Boat(new THREE.Vector3(10, -18, 55),false); // Autonomous boat
+	// autonomousBoat = new Boat(new THREE.Vector3(10, -18, 55),false); // Autonomous boat
 	renderer = new THREE.WebGLRenderer();
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(window.innerWidth, window.innerHeight);
@@ -164,11 +164,11 @@ function init()
 		}
 	);
 	water.rotation.x = -Math.PI / 2;
-	scene.add(water);
+	// scene.add(water);
 
 	const sky = new Sky();
 	sky.scale.setScalar(10000);
-	scene.add(sky);
+	// scene.add(sky);
 
 	const skyUniforms = sky.material.uniforms;
 	skyUniforms['turbidity'].value = 10;
@@ -196,8 +196,8 @@ function init()
 	window.addEventListener('resize', onWindowResize);
 	window.addEventListener('keydown', onKeyDown);
 	window.addEventListener('keyup', onKeyUp);
-	let bouys = [[700, -5, 250], [-400, -5, -100], [50, -5, -20]]
-	for(let i=0; i < bouys.length; i++)
+	let buoyCoords = [[700, -5, 250], [-400, -5, -100], [50, -5, -20]]
+	for(let i=0; i < buoyCoords.length; i++)
 		{
 		objLoader.load('/assets/boat/Low_Poly_Buoy.obj', (obj) =>
 		{
@@ -210,8 +210,8 @@ function init()
 			});
 
 			obj.scale.set(5, 5, 5);
-			obj.position.set(bouys[i][0], bouys[i][1], bouys[i][2]); // Adjust the position as needed
-			scene.add(obj);
+			obj.position.set(buoyCoords[i][0], buoyCoords[i][1], buoyCoords[i][2]); // Adjust the position as needed
+			// scene.add(obj);
 			buoys.push(obj);
 		});
 		}
@@ -220,7 +220,7 @@ function init()
 	new THREE.TextureLoader().load('assets/checkerboard.png', (texture) =>
 	{
 		const checkerboardMaterial = new THREE.MeshBasicMaterial({ map: texture });
-		const checkerboardGeometry = new THREE.PlaneGeometry(150, 100); // Adjust size as needed
+		const checkerboardGeometry = new THREE.PlaneGeometry(100, 100); // Adjust size as needed
 		checkerboardMesh = new THREE.Mesh(checkerboardGeometry, checkerboardMaterial);
 		checkerboardMesh.position.set(-200, 12, 35); // Adjust position as needed
 		checkerboardMesh.rotation.y=1.5;
@@ -251,7 +251,7 @@ function captureImages()
 		captureImage(leftCamera, `left_camera_image_${captureCount}.png`);
 		captureImage(rightCamera, `right_camera_image_${captureCount}.png`);
 		checkerboardMesh.rotation.y-=0.1;
-		console.log(`Captured set ${captureCount + 1}`);
+		console.log(`Captured set ${captureCount}`);
 		captureCount++;
 	}
 	checkerboardMesh.rotation.y = 1.5;
@@ -330,7 +330,7 @@ function onKeyUp(event)
 function switchCamera()
 {
 	activeCam++;
-	if(activeCam>=cameras.length)
+	if(activeCam>=cameras.length+1)
 	{
 		activeCam=0;
 	}
@@ -346,7 +346,7 @@ function animate()
 	requestAnimationFrame(animate);
 	render();
 	manualBoat.update();
-	updateAutonomousBoat();
+	// updateAutonomousBoat();
 	updateCamera();
 }
 function updateCamera()
@@ -364,8 +364,26 @@ function updateCamera()
 }
 function render()
 {
-	water.material.uniforms['time'].value += 1.0 / 60.0;
-	renderer.render(scene, cameras[activeCam]);
+	// water.material.uniforms['time'].value += 1.0 / 60.0;
+	if(activeCam>=cameras.length)
+	{
+		// Render scene from both cameras (for verification)
+		renderer.setViewport(0, 0, window.innerWidth / 2, window.innerHeight);
+		renderer.setScissor(0, 0, window.innerWidth / 2, window.innerHeight);
+		renderer.setScissorTest(true);
+		renderer.render(scene, leftCamera);
+
+		renderer.setViewport(window.innerWidth / 2, 0, window.innerWidth / 2, window.innerHeight);
+		renderer.setScissor(window.innerWidth / 2, 0, window.innerWidth / 2, window.innerHeight);
+		renderer.setScissorTest(true);
+		renderer.render(scene, rightCamera);
+	}
+	else
+	{
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		renderer.setScissorTest(false);
+		renderer.render(scene, cameras[activeCam]);
+	}
 }
 function renderToTarget()
 {

@@ -3,7 +3,7 @@ import numpy as np
 import glob
 
 # Prepare object points (3D points in real world space)
-checkerboard_size = (7, 11)
+checkerboard_size = (7, 7)
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 square_size = 1.0  # The size of a square in your defined unit (e.g., meters)
 objp = np.zeros((checkerboard_size[0] * checkerboard_size[1], 3), np.float32)
@@ -33,6 +33,7 @@ for img_left in images_left:
 ret, mtx_left, dist_left, rvecs_left, tvecs_left = cv2.calibrateCamera(objpoints, imgpoints_left, gray_l.shape[::-1], None, None)
 
 # Save the left camera calibration data
+print(mtx_left, dist_left)
 np.savez('calibration_data_left.npz', mtx=mtx_left, dist=dist_left)
 # Arrays to store object points and image points from all images
 imgpoints_right = []  # 2d points in image plane for the right camera
