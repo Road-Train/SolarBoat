@@ -1,12 +1,14 @@
 import cv2
 import numpy as np
-import pygetwindow as gw
 from PIL import ImageGrab
 import mediapipe as mp
 from mediapipe.tasks.python import vision
 import time
 
+# Model path
 model_path = 'ssd_mobilenet_v2.tflite'
+
+# MediaPipe options
 BaseOptions = mp.tasks.BaseOptions
 ObjectDetector = mp.tasks.vision.ObjectDetector
 ObjectDetectorOptions = mp.tasks.vision.ObjectDetectorOptions
@@ -19,14 +21,17 @@ def print_result(result, image, timestamp_ms):
     global latest_detection_result
     latest_detection_result = result
 
+# Set up the object detector options
 options = ObjectDetectorOptions(
     base_options=BaseOptions(model_asset_path=model_path),
     max_results=5,
     running_mode=VisionRunningMode.LIVE_STREAM,
     result_callback=print_result,
     score_threshold=0.3,
-    category_allowlist="boat"
+    category_allowlist=["boat"]
 )
+
+# Create the object detector
 detector = ObjectDetector.create_from_options(options)
 
 def draw_bounding_boxes(image, detection_result):
@@ -41,6 +46,7 @@ def draw_bounding_boxes(image, detection_result):
             confidence = detection.categories[0].score
             text = f'{label} ({confidence:.2f})'
             cv2.putText(image, text, (start_point[0], start_point[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
 def process_webcam():
     global latest_detection_result
     video = cv2.VideoCapture(0)
@@ -54,52 +60,59 @@ def process_webcam():
 
         if not success:
             break
+
         # Ensure the image is in RGB format
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=image_rgb)
         frame_timestamp_ms = int(time.time() * 1000)  # Current time in milliseconds
+
         detector.detect_async(mp_image, frame_timestamp_ms)
+
         if latest_detection_result:
             draw_bounding_boxes(image, latest_detection_result)
+
         cv2.imshow('Object Detection', image)
+
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+
     video.release()
     cv2.destroyAllWindows()
 
-def capture_window(window_title):
-    windows = gw.getWindowsWithTitle(window_title)
-    if not windows:
-        print(f"No window found with title: {window_title}")
-        return
+# Uncomment and modify the capture_window function if you need to capture from a specific window
+# def capture_window(window_title):
+#     windows = gw.getWindowsWithTitle(window_title)
+#     if not windows:
+#         print(f"No window found with title: {window_title}")
+#         return
     
-    window = windows[0]
-    window.activate()
+#     window = windows[0]
+#     window.activate()
 
-    while True:
-        bbox = (window.left, window.top, window.right, window.bottom)
-        screenshot = ImageGrab.grab(bbox=bbox)
-        frame = np.array(screenshot)
-        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+#     while True:
+#         bbox = (window.left, window.top, window.right, window.bottom)
+#         screenshot = ImageGrab.grab(bbox=bbox)
+#         frame = np.array(screenshot)
+#         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
 
-        # Ensure the image is in RGB format
-        image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=image_rgb)
-        frame_timestamp_ms = int(time.time() * 1000)  # Current time in milliseconds
+#         # Ensure the image is in RGB format
+#         image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+#         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=image_rgb)
+#         frame_timestamp_ms = int(time.time() * 1000)  # Current time in milliseconds
 
-        detector.detect_async(mp_image, frame_timestamp_ms)
+#         detector.detect_async(mp_image, frame_timestamp_ms)
 
-        # Draw bounding boxes on the original image
-        if latest_detection_result:
-            draw_bounding_boxes(frame, latest_detection_result)
+#         # Draw bounding boxes on the original image
+#         if latest_detection_result:
+#             draw_bounding_boxes(frame, latest_detection_result)
 
-        cv2.imshow('Object Detection', frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+#         cv2.imshow('Object Detection', frame)
+#         if cv2.waitKey(1) & 0xFF == ord('q'):
+#             break
 
-    cv2.destroyAllWindows()
+#     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    window_title = "Boat Simulation - Opera"  # Change this to your browser window's title
-    capture_window(window_title) # Boat Simulation
-    # process_webcam() # Camera
+    window_title = "Boat Simulation - Firefox"  # Change this to your browser window's title
+    # capture_window(window_title)  # Uncomment this line to capture from a specific window
+    process_webcam()  # Use this line to capture from the webcam
