@@ -17,6 +17,7 @@ const objLoader = new OBJLoader();
 const fbxLoader = new FBXLoader();
 const buoys = [];
 const renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
+let websocket;
 
 class Boat
 {
@@ -164,11 +165,11 @@ function init()
 		}
 	);
 	water.rotation.x = -Math.PI / 2;
-	// scene.add(water);
+	scene.add(water);
 
 	const sky = new Sky();
 	sky.scale.setScalar(10000);
-	// scene.add(sky);
+	scene.add(sky);
 
 	const skyUniforms = sky.material.uniforms;
 	skyUniforms['turbidity'].value = 10;
@@ -211,7 +212,7 @@ function init()
 
 			obj.scale.set(5, 5, 5);
 			obj.position.set(buoyCoords[i][0], buoyCoords[i][1], buoyCoords[i][2]); // Adjust the position as needed
-			// scene.add(obj);
+			scene.add(obj);
 			buoys.push(obj);
 		});
 		}
@@ -224,7 +225,7 @@ function init()
 		checkerboardMesh = new THREE.Mesh(checkerboardGeometry, checkerboardMaterial);
 		checkerboardMesh.position.set(-200, 12, 35); // Adjust position as needed
 		checkerboardMesh.rotation.y=1.5;
-		scene.add(checkerboardMesh);
+		// scene.add(checkerboardMesh);
 	}, undefined, (err) => 
 	{
 		console.error('An error occurred loading the texture:', err);
@@ -238,7 +239,43 @@ function init()
 	directionalLight.position.set(50, 50, 50);
 	directionalLight.castShadow = true;
 	scene.add(directionalLight);
+	connectWebSocket();
 	animate();
+}
+function connectWebSocket()
+{
+	websocket = new WebSocket('ws://localhost:8765');
+
+	websocket.onopen = function (event)
+	{
+		console.log('WebSocket is connected.');
+		setInterval(sendImages, 1000 / 5);  // FPS
+	};
+
+	websocket.onerror = function (event)
+	{
+		console.error('WebSocket error observed:', event);
+	};
+}
+function sendImages()
+{
+	if (websocket.readyState === WebSocket.OPEN)
+	{
+		function captureCameraImage(camera)
+		{
+			renderer.render(scene, camera);
+			return renderer.domElement.toDataURL('image/png').split(',')[1]; // Get base64 image data
+		}
+		let leftImage = captureCameraImage(leftCamera);
+		let rightImage = captureCameraImage(rightCamera);
+
+		// Ensure Base64 string length is a multiple of 4
+		leftImage = leftImage.padEnd(Math.ceil(leftImage.length / 4) * 4, '=');
+		rightImage = rightImage.padEnd(Math.ceil(rightImage.length / 4) * 4, '=');
+
+		websocket.send(leftImage);
+		websocket.send(rightImage);
+	}
 }
 function captureImages()
 {
@@ -349,6 +386,7 @@ function animate()
 	// updateAutonomousBoat();
 	updateCamera();
 }
+
 function updateCamera()
 {
 	const boatPosition = manualBoat.getPosition();
@@ -364,7 +402,7 @@ function updateCamera()
 }
 function render()
 {
-	// water.material.uniforms['time'].value += 1.0 / 60.0;
+	water.material.uniforms['time'].value += 1.0 / 60.0;
 	if(activeCam>=cameras.length)
 	{
 		// Render scene from both cameras (for verification)
@@ -384,16 +422,5 @@ function render()
 		renderer.setScissorTest(false);
 		renderer.render(scene, cameras[activeCam]);
 	}
-}
-function renderToTarget()
-{
-	renderer.setRenderTarget(renderTarget);
-	renderer.render(scene, detectorCam);
-	renderer.setRenderTarget(null); // Reset render target
-}
-function debugCameraView(camera)
-{
-	// Temporarily set the active camera of the renderer
-	renderer.render(scene, camera);
 }
 init();

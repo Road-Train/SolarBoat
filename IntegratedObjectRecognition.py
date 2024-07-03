@@ -1,121 +1,92 @@
 import cv2
 import numpy as np
+import websockets
+import asyncio
+import base64
+from PIL import Image
+import io
 import mediapipe as mp
-from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 import time
 
-# Load pre-calibrated parameters
-stereo_params = {
-    'left_camera_matrix': np.array([[...]]) , # Fill in with your values
-    'right_camera_matrix': np.array([[...]]) ,# Fill in with your values
-    'left_distortion': np.array([...]) , # Fill in with your values
-    'right_distortion': np.array([...]) ,# Fill in with your values
-    'R': np.array([[...]]), # Rotation matrix between the cameras
-    'T': np.array([[...]]), # Translation vector between the cameras
-}
-
-# Stereo rectification (Adjust as per your calibration results)
-R1, R2, P1, P2, Q, _, _ = cv2.stereoRectify(
-    stereo_params['left_camera_matrix'], stereo_params['left_distortion'],
-    stereo_params['right_camera_matrix'], stereo_params['right_distortion'],
-    (640, 480), stereo_params['R'], stereo_params['T'])
-
-map1x, map1y = cv2.initUndistortRectifyMap(
-    stereo_params['left_camera_matrix'], stereo_params['left_distortion'], R1, P1, (640, 480), cv2.CV_16SC2)
-map2x, map2y = cv2.initUndistortRectifyMap(
-    stereo_params['right_camera_matrix'], stereo_params['right_distortion'], R2, P2, (640, 480), cv2.CV_16SC2)
-
-# Initialize stereo block matching object
-stereo = cv2.StereoBM_create(numDisparities=16, blockSize=15)
-
-# Object detection setup
+# Define camera parameters
+f = 1.0  # Focal length (replace with actual value)
+B = 10.0  # Baseline distance (same units as your Three.js scene)
 model_path = 'ssd_mobilenet_v2.tflite'
 BaseOptions = mp.tasks.BaseOptions
 ObjectDetector = mp.tasks.vision.ObjectDetector
 ObjectDetectorOptions = mp.tasks.vision.ObjectDetectorOptions
 VisionRunningMode = mp.tasks.vision.RunningMode
-
-latest_detection_result = None
-
+latest_detection_result_left = None
+latest_detection_result_right = None
 def print_result(result, image, timestamp_ms):
-    global latest_detection_result
-    latest_detection_result = result
-
+    global latest_detection_result_left
+    global latest_detection_result_right
+    if(image == mp_left):
+        latest_detection_result_left = result
+    else:
+        latest_detection_result_right = result
 options = ObjectDetectorOptions(
     base_options=BaseOptions(model_asset_path=model_path),
     max_results=5,
     running_mode=VisionRunningMode.LIVE_STREAM,
     result_callback=print_result,
-    score_threshold=0.5
+    # score_threshold=0.1
 )
-detector = ObjectDetector.create_from_options(options)
+left_detector = ObjectDetector.create_from_options(options)
+right_detector = ObjectDetector.create_from_options(options)
+async def process_images(websocket, path):
+    global latest_detection_result_left
+    global latest_detection_result_right
+    global mp_left
+    global mp_right
+    while True:
+        # Receive images as base64 strings
+        left_image_b64 = await websocket.recv()
+        right_image_b64 = await websocket.recv()
 
-def draw_bounding_boxes(image, detection_result, disparity, Q):
-    if detection_result is not None:
-        for detection in detection_result.detections:
-            bbox = detection.bounding_box
-            start_point = (int(bbox.origin_x), int(bbox.origin_y))
-            end_point = (int(bbox.origin_x + bbox.width), int(bbox.origin_y + bbox.height))
-            cv2.rectangle(image, start_point, end_point, (0, 255, 0), 2)
-            
-            label = detection.categories[0].category_name
-            confidence = detection.categories[0].score
-            text = f'{label} ({confidence:.2f})'
-            
-            # Estimate distance
-            center_x = int(bbox.origin_x + bbox.width / 2)
-            center_y = int(bbox.origin_y + bbox.height / 2)
-            disparity_value = disparity[center_y, center_x]
-            if disparity_value > 0:  # Avoid division by zero
-                distance = Q[2, 3] / (disparity_value + 1e-6)  # Small epsilon to avoid division by zero
-                text += f' Distance: {distance:.2f}m'
-            
-            cv2.putText(image, text, (start_point[0], start_point[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        # Decode images
+        left_image_data = base64.b64decode(left_image_b64)
+        right_image_data = base64.b64decode(right_image_b64)
 
-# Capture video from two cameras
-cap_left = cv2.VideoCapture(0)
-cap_right = cv2.VideoCapture(1)
+        left_image = Image.open(io.BytesIO(left_image_data))
+        right_image = Image.open(io.BytesIO(right_image_data))
 
-while cap_left.isOpened() and cap_right.isOpened():
-    ret_left, frame_left = cap_left.read()
-    ret_right, frame_right = cap_right.read()
-    
-    if not ret_left or not ret_right:
-        break
+        left_image = np.array(left_image)
+        right_image = np.array(right_image)
 
-    # Rectify images
-    rectified_left = cv2.remap(frame_left, map1x, map1y, cv2.INTER_LINEAR)
-    rectified_right = cv2.remap(frame_right, map2x, map2y, cv2.INTER_LINEAR)
+        # Convert to grayscale
+        gray_left = cv2.cvtColor(left_image, cv2.COLOR_BGR2GRAY)
+        gray_right = cv2.cvtColor(right_image, cv2.COLOR_BGR2GRAY)
 
-    # Convert to grayscale
-    gray_left = cv2.cvtColor(rectified_left, cv2.COLOR_BGR2GRAY)
-    gray_right = cv2.cvtColor(rectified_right, cv2.COLOR_BGR2GRAY)
+        # Convert to RGB
+        rgb_left = cv2.cvtColor(left_image, cv2.COLOR_BGR2RGB)
+        rgb_right = cv2.cvtColor(right_image, cv2.COLOR_BGR2RGB)
 
-    # Compute disparity
-    disparity = stereo.compute(gray_left, gray_right)
+        # convert to MP
+        image_format=mp.ImageFormat.SRGB
+        frame_timestamp_ms = int(time.time() * 1000)  # Current time in milliseconds
+        mp_left = mp.Image(image_format,data=rgb_left)
+        mp_right = mp.Image(image_format,data=rgb_right)
+        left_detector.detect_async(mp_left,frame_timestamp_ms)
+        right_detector.detect_async(mp_right,frame_timestamp_ms)
+        
+        # Compute disparity map
+        stereo = cv2.StereoBM_create(numDisparities=16, blockSize=15)
+        disparity = stereo.compute(gray_left, gray_right).astype(np.float32) / 16.0
+        depth_map = np.zeros_like(disparity)
+        if latest_detection_result_right is not None:
+            for obj in latest_detection_result_right.detections:
+                bbox = obj.bounding_box
+                start_point = (int(bbox.origin_x), int(bbox.origin_y))
+                end_point = (int(bbox.origin_x + bbox.width), int(bbox.origin_y + bbox.height))
+                depth_map[start_point[1]:end_point[1], start_point[0]:end_point[0]] = (f * B) / disparity[start_point[1]:end_point[1], start_point[0]:end_point[0]]
+        cv2.imshow("Depth Map", depth_map / np.max(depth_map))
+        cv2.waitKey(1)
 
-    # Normalize disparity map for visualization
-    disp_vis = cv2.normalize(disparity, disparity, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
-    disp_vis = np.uint8(disp_vis)
+async def main():
+    server = await websockets.serve(process_images, "localhost", 8765, max_size=1024**3)
+    print("Server started at ws://localhost:8765")
+    await server.wait_closed()
 
-    # Convert rectified_left to RGB and feed it to the detector
-    rectified_left_rgb = cv2.cvtColor(rectified_left, cv2.COLOR_BGR2RGB)
-    mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rectified_left_rgb)
-    frame_timestamp_ms = int(time.time() * 1000)  # Current time in milliseconds
-
-    detector.detect_async(mp_image, frame_timestamp_ms)
-
-    # Draw bounding boxes on the rectified left image
-    if latest_detection_result:
-        draw_bounding_boxes(rectified_left, latest_detection_result, disparity, Q)
-
-    # Display images
-    cv2.imshow('Disparity Map', disp_vis)
-    cv2.imshow('Object Detection', rectified_left)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-cap_left.release()
-cap_right.release()
-cv2.destroyAllWindows()
+asyncio.get_event_loop().run_until_complete(main())
