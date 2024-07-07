@@ -38,3 +38,7 @@ h1 {
 .connection-status p {
   @apply text-xl text-gray-700;
 }
+
+.logo {
+  @apply mx-auto my-4 w-24 h-24 object-cover rounded-full;
+}
