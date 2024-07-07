@@ -7,10 +7,8 @@ const Header = () => {
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <nav>
           <ul className="flex space-x-4">
-            
-            <li><a href="./public/index.html" className="hover:text-gray-200">Home</a></li>
-            <li><a href="./public/index.html" className="hover:text-gray-200">GitHub</a></li>
-            <li><a href="./public/index.html" className="hover:text-gray-200">GitLab</a></li>
+            <li><a href="https://github.com/Road-Train/SolarBoat" className="hover:text-gray-200">GitHub</a></li>
+            <li><a href="https://gitlab.com/Road-Train1/SolarBoat" className="hover:text-gray-200">GitLab</a></li>
           </ul>
         </nav>
       </div>
