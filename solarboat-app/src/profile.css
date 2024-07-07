@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply font-sans bg-gray-100 h-screen m-0 p-0;
+}
+
+h1 {
+  @apply text-center text-white text-2xl py-4;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar {
+  @apply w-64 bg-gray-800 text-white h-full fixed top-0 left-0 shadow-lg;
+}
+
+.sidebar h2 {
+  @apply text-xl font-bold p-4;
+}
+
+.sidebar a {
+  @apply block px-4 py-2 mt-2 text-sm text-gray-300 rounded-lg hover:bg-gray-700;
+}
+
+.main-content {
+  @apply ml-64 p-8 bg-white min-h-screen;
+}
+
+.simulation-window,
+.camera-window,
+.connection-status {
+  @apply h-96 bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center m-4 p-4 rounded-lg;
+}
+
+.simulation-window p,
+.camera-window p,
+.connection-status p {
+  @apply text-xl text-gray-700;
+}
