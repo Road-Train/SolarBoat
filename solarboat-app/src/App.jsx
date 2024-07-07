@@ -4,6 +4,7 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 import Profile from './Profile';
 import DashboardContent from './DashboardContent';
+import NUC from './NUC'
 
 const App = () => {
   return (
@@ -17,7 +18,7 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/simulation" element={<div className="simulation-window"><p>Simulation Window</p></div>} />
             <Route path="/recognition" element={<div className="camera-window"><p>Camera Window</p></div>} />
-            <Route path="/nuc" element={<div className="connection-status"><p>NUC Connection Status</p></div>} />
+            <Route path="/NUC" Component={NUC} />
           </Routes>
         </main>
       </div>
