@@ -3,7 +3,8 @@ Knowledge Management Repository
 
 Requirements:
 Python 3.
-
+## Installing:
+pip install -r requirements.txt should get you all the requirements that you'll need for this project.
 ## Running the various programs in here:
 ### For the object recognition/disparity map:
 Run Server.py, wait until it is started.
