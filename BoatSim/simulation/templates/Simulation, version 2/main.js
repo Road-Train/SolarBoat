@@ -8,16 +8,13 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 
 let orbitCam, detectorCam, scene, renderer;
 let orbitControls, water, sun;
-let leftCamera,rightCamera;
+let leftCamera, rightCamera;
 let cameras = []
 let activeCam = 0;
-let manualBoat, autonomousBoat;
-let checkerboardMesh;
+let manualBoat, autonomousBoat, demoBoat;
 const objLoader = new OBJLoader();
 const fbxLoader = new FBXLoader();
 const buoys = [];
-const renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
-let websocket;
 
 class Boat
 {
@@ -59,10 +56,10 @@ class Boat
 		orbitCam = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 20000);
 		leftCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
 		rightCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
-		detectorCam = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 20000);
+		detectorCam = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
 		cameras = [orbitCam, detectorCam];
-		
-		orbitCam.position.set(0,30,-30);
+
+		orbitCam.position.set(0, 30, -30);
 		detectorCam.position.set(0, 30, -60);
 		leftCamera.position.set(-5, 30, -60);
 		rightCamera.position.set(5, 30, -60);
@@ -74,7 +71,7 @@ class Boat
 		orbitControls = new OrbitControls(orbitCam, renderer.domElement);
 		orbitControls.maxPolarAngle = Math.PI * 0.495;
 		orbitControls.target.copy(this.boat.position);
-		orbitControls.target.y+=30;
+		orbitControls.target.y += 30;
 		orbitControls.minDistance = 60.0;
 		orbitControls.maxDistance = 200.0;
 		scene.add(orbitControls);
@@ -137,7 +134,8 @@ class Boat
 function init()
 {
 	scene = new THREE.Scene();
-	manualBoat = new Boat(new THREE.Vector3(5, -18, 50),true);  // Keyboard-controlled boat
+	manualBoat = new Boat(new THREE.Vector3(5, -18, 50), true);  // Keyboard-controlled boat
+	demoBoat = new Boat(new THREE.Vector3(-200, -18, 50), false);  // Stationary boat for object recognition demo.
 	// autonomousBoat = new Boat(new THREE.Vector3(10, -18, 55),false); // Autonomous boat
 	renderer = new THREE.WebGLRenderer();
 	renderer.setPixelRatio(window.devicePixelRatio);
@@ -198,8 +196,8 @@ function init()
 	window.addEventListener('keydown', onKeyDown);
 	window.addEventListener('keyup', onKeyUp);
 	let buoyCoords = [[700, -5, 250], [-400, -5, -100], [50, -5, -20]]
-	for(let i=0; i < buoyCoords.length; i++)
-		{
+	for (let i = 0; i < buoyCoords.length; i++)
+	{
 		objLoader.load('/assets/boat/Low_Poly_Buoy.obj', (obj) =>
 		{
 			obj.traverse(function (child)
@@ -215,21 +213,8 @@ function init()
 			scene.add(obj);
 			buoys.push(obj);
 		});
-		}
+	}
 
-	//Camera calibration, this is temporary.
-	new THREE.TextureLoader().load('assets/checkerboard.png', (texture) =>
-	{
-		const checkerboardMaterial = new THREE.MeshBasicMaterial({ map: texture });
-		const checkerboardGeometry = new THREE.PlaneGeometry(100, 100); // Adjust size as needed
-		checkerboardMesh = new THREE.Mesh(checkerboardGeometry, checkerboardMaterial);
-		checkerboardMesh.position.set(-200, 12, 35); // Adjust position as needed
-		checkerboardMesh.rotation.y=1.5;
-		// scene.add(checkerboardMesh);
-	}, undefined, (err) => 
-	{
-		console.error('An error occurred loading the texture:', err);
-	});
 	// Add Ambient Light
 	const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // soft white light
 	scene.add(ambientLight);
@@ -242,74 +227,67 @@ function init()
 	connectWebSocket();
 	animate();
 }
-function connectWebSocket()
-{
-	websocket = new WebSocket('ws://localhost:8765');
-
-	websocket.onopen = function (event)
-	{
-		console.log('WebSocket is connected.');
-		setInterval(sendImages, 1000 / 5);  // FPS
-	};
-
-	websocket.onerror = function (event)
-	{
-		console.error('WebSocket error observed:', event);
-	};
-}
-function sendImages()
-{
-	if (websocket.readyState === WebSocket.OPEN)
-	{
-		function captureCameraImage(camera)
-		{
-			renderer.render(scene, camera);
-			return renderer.domElement.toDataURL('image/png').split(',')[1]; // Get base64 image data
-		}
-		let leftImage = captureCameraImage(leftCamera);
-		let rightImage = captureCameraImage(rightCamera);
-
-		// Ensure Base64 string length is a multiple of 4
-		leftImage = leftImage.padEnd(Math.ceil(leftImage.length / 4) * 4, '=');
-		rightImage = rightImage.padEnd(Math.ceil(rightImage.length / 4) * 4, '=');
-
-		websocket.send(leftImage);
-		websocket.send(rightImage);
-	}
-}
-function captureImages()
-{
-	let captureCount = 1;
-	const maxCaptures = 10;
-	checkerboardMesh.rotation.y =2;
-	while(captureCount <= maxCaptures)
-	{
-
-		captureImage(leftCamera, `left_camera_image_${captureCount}.png`);
-		captureImage(rightCamera, `right_camera_image_${captureCount}.png`);
-		checkerboardMesh.rotation.y-=0.1;
-		console.log(`Captured set ${captureCount}`);
-		captureCount++;
-	}
-	checkerboardMesh.rotation.y = 1.5;
-	console.log('Finished capturing images');
-	return;
-	
-}
-function captureImage(camera, filename)
+// Function to capture an image and split it into chunks
+async function captureAndSendImageChunks(camera, websocket, chunkSize = 16384)
 {
 	renderer.render(scene, camera);
-	const imageData = renderer.domElement.toDataURL('image/png');
-	downloadImage(imageData, filename);
+	const imageData = renderer.domElement.toDataURL('image/png').split(',')[1]; // Base64 encoded image data
+	const totalChunks = Math.ceil(imageData.length / chunkSize);
+
+	for (let i = 0; i < totalChunks; i++)
+	{
+		let cameraId;
+		switch (camera)
+		{
+			case leftCamera:
+				cameraId = 'left';
+				break;
+			case rightCamera:
+				cameraId = 'right';
+				break;
+			case detectorCam:
+				cameraId = 'center';
+				break;
+		}
+		const chunk = imageData.slice(i * chunkSize, (i + 1) * chunkSize);
+		await websocket.send(JSON.stringify({
+			cameraId, chunk, index: i, total: totalChunks
+		}));
+	}
 }
 
-function downloadImage(data, filename)
+// Function to capture images from both cameras and send them in chunks
+async function connectWebSocket()
 {
-	const link = document.createElement('a');
-	link.href = data;
-	link.download = filename;
-	link.click();
-	renderer.render(scene, cameras[activeCam]);
+	const websocket = new WebSocket('ws://localhost:8765');
+	let sendImagesInterval;
+	websocket.onopen = async () =>
+	{
+		sendImagesInterval = setInterval(async () =>
+		{
+			await captureAndSendImageChunks(detectorCam, websocket);
+			await captureAndSendImageChunks(leftCamera, websocket);
+			await captureAndSendImageChunks(rightCamera, websocket);
+		}, 200);
+	};
+
+	websocket.onmessage = (event) =>
+	{
+		const message = JSON.parse(event.data);
+		console.log(message.status); // Handle server responses if needed
+	};
+
+	websocket.onerror = (error) =>
+	{
+		console.error('WebSocket Error: ', error);
+		clearInterval(sendImagesInterval);
+	};
+
+	websocket.onclose = () =>
+	{
+		console.log('WebSocket connection closed');
+		clearInterval(sendImagesInterval);
+	};
 }
 function onWindowResize()
 {
@@ -345,10 +323,6 @@ function onKeyDown(event)
 		console.log("V");
 		switchCamera();
 	}
-	if (keys['c'])
-	{
-		captureImages();
-	}
 }
 
 function onKeyUp(event)
@@ -367,9 +341,9 @@ function onKeyUp(event)
 function switchCamera()
 {
 	activeCam++;
-	if(activeCam>=cameras.length+1)
+	if (activeCam >= cameras.length + 1)
 	{
-		activeCam=0;
+		activeCam = 0;
 	}
 }
 function updateAutonomousBoat()
@@ -403,7 +377,7 @@ function updateCamera()
 function render()
 {
 	water.material.uniforms['time'].value += 1.0 / 60.0;
-	if(activeCam>=cameras.length)
+	if (activeCam >= cameras.length)
 	{
 		// Render scene from both cameras (for verification)
 		renderer.setViewport(0, 0, window.innerWidth / 2, window.innerHeight);
