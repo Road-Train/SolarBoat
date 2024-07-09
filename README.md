@@ -15,3 +15,7 @@ Run OldObjectRecognition.py, make sure it is set up to actually use the webcam.
 Run InputReader.py
 
 Note: The docker containers DO NOT work unless used via the NUC.
+
+To run Code within Docker: 
+docker run --privileged --cap-add=ALL --device=/dev/input/js0:/dev/input/js0 -e XDG_RUNTIME_DIR=/tmp/runtime-dir -v /home/solarboat/Downloads/SolarBoat-main:/app -w /app -it --user root solarboatmain:latest /bin/bash
+python3 "the code file you want to run.py" (without the ") for example : python3 InputReader.py

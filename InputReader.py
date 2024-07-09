@@ -1,3 +1,4 @@
+
 import pygame
 import time
 
@@ -79,7 +80,7 @@ def main():
             print("No joystick connected.")
             pygame.quit()
             pygame.init()
-        time.sleep(3)  # Check for joystick reconnection every second if none are connected
+        time.sleep(3)   # Check for joystick reconnection every second if none are connected
 
 if __name__ == "__main__":
     main()
